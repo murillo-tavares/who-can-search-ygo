@@ -32,7 +32,7 @@ Add ... from your Deck to your hand
 
 Cards may have multiple extracted effect records. Effects store parsed actions in `actions_json`; target matching is reused through `card_selectors` and `search_relationships`.
 
-Rule parsing should read card text and persist supported extracted effects. Relationship preprocessing should consume those extracted effects instead of discovering candidates by scanning card text.
+Rule parsing should read card text and persist only supported extracted effects. Unsupported or uncertain text should not create extracted effects, selectors, or relationships. Relationship preprocessing should consume persisted extracted effects instead of discovering candidates by scanning card text.
 
 Normal user queries must use precomputed relationships. Do not scan all card text during request handling.
 
@@ -43,7 +43,7 @@ Normal user queries must use precomputed relationships. Do not scan all card tex
 - Database: PostgreSQL with `pg_trgm`.
 - Data source: unresolved; see `.ai/open-questions.md`.
 - Sync/preprocessing: manual CLI commands for MVP.
-- Public relationship results: show only `accepted` relationships by default.
+- Public relationship results: persisted relationships are valid by default.
 
 ## Non-Negotiables
 

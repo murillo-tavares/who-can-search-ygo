@@ -55,7 +55,7 @@ Rationale:
 
 - User queries must be fast.
 - Rule parsing can be expensive and should run outside normal requests.
-- Precomputed rows allow review, status, and versioning.
+- Precomputed rows allow fast lookup, audit hashes, and versioning.
 
 Consequences:
 
@@ -118,8 +118,8 @@ Rationale:
 
 Consequences:
 
-- Extracted effects need parser version, review status, text segments, action tags, and `actions_json` objects that reference reusable selectors.
-- Public searcher queries rely on accepted precomputed relationships, not on card text.
+- Extracted effects need parser version, text segments, action tags, and `actions_json` objects that reference reusable selectors.
+- Public searcher queries rely on precomputed relationships, not on card text.
 - Re-extraction must be able to add, update, or remove effect rows when card text changes, parser versions change, or supported action families expand.
 
 ## ADR-007: Let The Selected Source Define The Initial Card Universe
@@ -152,7 +152,7 @@ Persist parsed effects separately from selector-target relationships. Store text
 
 Rationale:
 
-- Parser output needs review, versioning, and regeneration.
+- Parser output needs versioning and regeneration.
 - Public search should reuse precomputed selector-target rows.
 - JSONB stores audit shape; Go structs remain the rule-engine model.
 
@@ -160,7 +160,7 @@ Consequences:
 
 - Rule parsing must produce typed effects that serialize to `text_segments_json` and `actions_json`.
 - Rule parsing should use PSCT punctuation before matching supported effect patterns.
-- Relationship preprocessing should derive target rows from accepted selectors referenced by accepted `actions_json` entries with `action_kind = move_card`.
+- Relationship preprocessing should derive target rows from selectors referenced by `actions_json` entries with `action_kind = move_card`.
 
 ## ADR-009: Use Latest Raw Payload Only For MVP
 
@@ -206,7 +206,7 @@ Status: accepted
 
 Decision:
 
-Store controlled vocabulary fields as text columns. Define allowed enum values in application code rather than creating database lookup tables for finite application vocabularies, including actions, zones, match kinds, statuses, and report types.
+Store controlled vocabulary fields as text columns. Define allowed enum values in application code rather than creating database lookup tables for finite application vocabularies, including actions, zones, match kinds, and report types.
 
 Rationale:
 
@@ -217,7 +217,7 @@ Rationale:
 Consequences:
 
 - The application layer must validate enum values before writes.
-- Migrations do not need lookup tables for actions, zones, match kinds, statuses, report types, or similar small finite workflow values.
+- Migrations do not need lookup tables for actions, zones, match kinds, report types, or similar small finite workflow values.
 - If an admin workflow later needs editable labels, ordering, or metadata, this can be revisited.
 
 ## ADR-012: Use Build-Like Rule Version Identifiers

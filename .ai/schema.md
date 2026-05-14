@@ -65,7 +65,7 @@ Constraints and indexes:
 - Trigram index on `normalized_name`.
 - Index on `passcode` when available.
 - GIN index on `normalized_aliases`.
-- Optional GIN index on `aliases` only when review or import tooling needs metadata queries over alias objects.
+- Optional GIN index on `aliases` only when import or debug tooling needs metadata queries over alias objects.
 - GIN index on `mentions`.
 - GIN index on `monster_categories`.
 
@@ -230,7 +230,7 @@ Description:
 
 Stores reusable target-card criteria. Selectors are deduplicated by stable hash so multiple extracted effects can share one target group.
 
-Only persist selectors that are useful for supported matching or review workflows. The MVP should persist selectors that can produce target-card relationships. Do not store every recognized non-matching fragment unless a later workflow needs it.
+Only persist selectors that are useful for supported matching. The MVP should persist selectors that can produce target-card relationships. Do not store every recognized non-matching fragment unless a later workflow needs it.
 
 Fields:
 
@@ -239,22 +239,19 @@ Fields:
 | `id` | uuid primary key | Internal reusable selector ID. |
 | `selector_version` | text not null | Version of the canonical selector criteria shape, such as `selector-1`. |
 | `criteria_json` | jsonb not null | Canonical card criteria list. All criteria in the list must match. |
-| `status` | text not null | Selector review/support status. |
 | `selector_hash` | text not null | Stable hash generated from selector version and canonical criteria JSON. |
 | `created_at` | timestamptz not null | Timestamp when the selector row was first created. |
 | `updated_at` | timestamptz not null | Timestamp when the selector row was last updated. |
 
 Supported values:
 
-- `status`: `accepted`, `needs_review`, `invalid`.
 - `criteria_json[].field`: `name`, `card_type`, `race`, `spell_trap_type`, `attribute`, `atk`, `def`, `level`, `rank`, `link_rating`, `archetype`, `mentions`.
 - `criteria_json[].op`: `eq`, `in`, `lte`, `gte`.
 
 Constraints and indexes:
 
 - Unique `selector_hash`.
-- Index on `status`.
-- Optional GIN index on `criteria_json` only when preprocessing or review tooling needs it.
+- Optional GIN index on `criteria_json` only when preprocessing or debug tooling needs it.
 
 Notes:
 
@@ -274,7 +271,6 @@ Example record:
     { "field": "race", "op": "eq", "value": "Warrior" },
     { "field": "level", "op": "lte", "value": 4 }
   ],
-  "status": "accepted",
   "selector_hash": "sha256:selector-1:monster-warrior-level-lte-4",
   "created_at": "2026-04-30T12:00:00Z",
   "updated_at": "2026-04-30T12:00:00Z"
@@ -291,7 +287,6 @@ Example selector for Spell/Trap cards that mention a card name:
     { "field": "card_type", "op": "in", "value": ["Spell", "Trap"] },
     { "field": "mentions", "op": "eq", "value": "Dark Magician" }
   ],
-  "status": "accepted",
   "selector_hash": "sha256:selector-1:spell-trap-mentions-dark-magician",
   "created_at": "2026-04-30T12:00:00Z",
   "updated_at": "2026-04-30T12:00:00Z"
@@ -304,7 +299,7 @@ Description:
 
 Stores parsed effect occurrences from card text. A card can have zero, one, or many extracted effects.
 
-This table keeps effect identity, parser metadata, review status, original text segments, and parsed action specifications. Reusable target criteria sets live in `card_selectors`; actions reference selectors by ID and hash inside `actions_json`.
+This table keeps effect identity, parser metadata, original text segments, and parsed action specifications. Reusable target criteria sets live in `card_selectors`; actions reference selectors by ID and hash inside `actions_json`.
 
 Fields:
 
@@ -317,14 +312,11 @@ Fields:
 | `action_tags` | text[] not null | Application-defined action tags found in this effect. |
 | `text_segments_json` | jsonb not null | Full effect text, PSCT-derived text segments, offsets, and optional linking metadata. |
 | `actions_json` | jsonb not null default `[]` | Ordered parsed action specifications, including phase, action kind, verb, action-specific config, and referenced card selector IDs/hashes. |
-| `status` | text not null | Review status for this extracted effect. |
-| `status_reason` | text null | Reason when status is `needs_review` or `invalid`. |
 | `effect_hash` | text not null | Stable hash generated from parser version plus normalized text segments, action specifications, and selector hashes. |
 | `extracted_at` | timestamptz not null | Timestamp when extraction produced this row. |
 
 Supported values:
 
-- `status`: `accepted`, `needs_review`, `invalid`.
 - `effect_type`: `activated_effect`, `trigger_effect`, `continuous_effect`.
 - `action_tags`: `add`.
 
@@ -332,16 +324,16 @@ Constraints and indexes:
 
 - Unique `card_id, parser_version, effect_hash`.
 - Index on `card_id`.
-- Index on `parser_version, status`.
-- GIN index on `actions_json` to support public searcher queries that match selector references inside accepted extracted effects.
-- Optional GIN index on `action_tags` or `text_segments_json` only when preprocessing, public query filters, or review tooling needs it.
+- Index on `parser_version`.
+- GIN index on `actions_json` to support public searcher queries that match selector references inside extracted effects.
+- Optional GIN index on `action_tags` or `text_segments_json` only when preprocessing, public query filters, or debug tooling needs it.
 
 Notes:
 
 - Core rule logic should use typed structs and serialize parsed action occurrences to `actions_json`.
 - Store full effect text and PSCT-derived text segments inside `text_segments_json`.
 - Matching should use linked `card_selectors`, not raw text fields.
-- For the MVP, public search relationships should be generated only for selectors referenced by accepted extracted effects whose `actions_json` contains an action with `action_kind = move_card`, `verb = add`, `config.from = deck`, and `config.to = hand`.
+- For the MVP, public search relationships should be generated only for selectors referenced by extracted effects whose `actions_json` contains an action with `action_kind = move_card`, `verb = add`, `config.from = deck`, and `config.to = hand`.
 
 ### Extracted Effect Actions
 
@@ -449,8 +441,6 @@ Example record:
       }
     }
   ],
-  "status": "accepted",
-  "status_reason": null,
   "effect_hash": "sha256:rules-1:rota-text:add-warrior-level-lte-4",
   "extracted_at": "2026-04-30T12:00:00Z"
 }
@@ -460,7 +450,7 @@ Example record:
 
 Description:
 
-Stores precomputed matches from reusable card selectors to target cards. Normal public searcher queries should read this table, then find accepted extracted effects whose `actions_json` references the matched selector and action scope. They should not scan card text or recompute selectors.
+Stores precomputed matches from reusable card selectors to target cards. Normal public searcher queries should read this table, then find extracted effects whose `actions_json` references the matched selector and action scope. They should not scan card text or recompute selectors.
 
 `preprocessing_runs` is intentionally omitted from the MVP schema. Relationship generation should be idempotent through `selector_hash`, `relationship_version`, and `relationship_hash`. If later operations need detailed run auditing, add a separate run table without changing the selector-target relationship shape.
 
@@ -473,27 +463,24 @@ Fields:
 | `target_card_id` | uuid not null references `cards(id)` | Card that satisfies the selector. |
 | `relationship_version` | text not null | Relationship matcher/preprocessor version used to produce this row, such as `relationships-1`. |
 | `match_kind` | text not null | Matching strategy used for this target. |
-| `status` | text not null | Review status for public visibility. |
-| `status_reason` | text null | Reason when status is `needs_review` or `invalid`. |
 | `relationship_hash` | text not null | Stable hash generated from selector hash, target card, and relationship version. |
 | `processed_at` | timestamptz not null | Timestamp when this relationship was generated. |
 
 Supported values:
 
 - `match_kind`: `exact_name`, `criteria`, `archetype`, `manual`.
-- `status`: `accepted`, `needs_review`, `invalid`.
 
 Constraints and indexes:
 
 - Unique `card_selector_id, target_card_id, relationship_version`.
 - Unique `relationship_hash`.
-- Index on `target_card_id, status`.
-- Index on `card_selector_id, status`.
+- Index on `target_card_id`.
+- Index on `card_selector_id`.
 - Index on `relationship_version`.
 
 Notes:
 
-- MVP public query filters `search_relationships.status = accepted`, then matches accepted `extracted_effects.actions_json` entries that reference the relationship's `card_selector_id` with `selector_role = target`. The action scope still requires `action_kind = move_card`, `verb = add`, `config.from = deck`, and `config.to = hand`.
+- MVP public query filters `search_relationships` by target card, then matches `extracted_effects.actions_json` entries that reference the relationship's `card_selector_id` with `selector_role = target`. The action scope still requires `action_kind = move_card`, `verb = add`, `config.from = deck`, and `config.to = hand`.
 
 Example record:
 
@@ -504,8 +491,6 @@ Example record:
   "target_card_id": "00000000-0000-4000-8000-000000000019",
   "relationship_version": "relationships-1",
   "match_kind": "criteria",
-  "status": "accepted",
-  "status_reason": null,
   "relationship_hash": "sha256:selector-monster-warrior-level-lte-4:target:relationships-1",
   "processed_at": "2026-04-30T12:01:00Z"
 }

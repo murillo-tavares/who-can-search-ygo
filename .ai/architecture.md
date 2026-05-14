@@ -28,7 +28,7 @@ Database:
 - JSONB for upstream raw payloads, aliases, text segments, parsed actions, and selector criteria.
 - `card_selectors` for reusable target-card criteria.
 - `search_relationships` for precomputed selector-to-target matches.
-- Indexed status/version/hash fields for effects, selectors, and relationships.
+- Indexed version/hash fields for effects, selectors, and relationships.
 
 Local infrastructure:
 
@@ -128,7 +128,7 @@ Normal public lookups should be index-friendly and relationship-driven:
 
 - Card name search may query the card table.
 - Searcher results must read precomputed selector-target relationships, not card text.
-- The MVP searcher query starts from `accepted` relationships for the target card, then finds accepted extracted effects whose `actions_json` references the relationship selector with `action_kind = move_card`, `verb = add`, `config.from = deck`, and `config.to = hand`.
+- The MVP searcher query starts from relationships for the target card, then finds extracted effects whose `actions_json` references the relationship selector with `action_kind = move_card`, `verb = add`, `config.from = deck`, and `config.to = hand`.
 - Relationship preprocessing should match target cards from `card_selectors`, not scan raw card text.
 - Imported cards remain available as target cards regardless of whether they currently have extracted effects.
 - User reports may be anonymous, but the API must include basic spam protection such as rate limiting, validation, or another lightweight abuse-control mechanism.

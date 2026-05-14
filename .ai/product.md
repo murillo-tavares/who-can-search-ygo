@@ -32,7 +32,7 @@ The MVP must allow users to:
 
 - Search for a card by name.
 - Choose a target card from search results.
-- List cards with accepted precomputed relationships that can get the target card from the Deck to the hand.
+- List cards with precomputed relationships that can get the target card from the Deck to the hand.
 - Extract and store supported effect records from card text so relationship preprocessing can match targets from structured effect data.
 - Support exact-name search effects.
 - Support common criteria-based effects:
@@ -49,7 +49,7 @@ The MVP must allow users to:
 ## Out Of Scope For MVP
 
 - Public result filters outside the default Deck-to-hand add flow.
-- Relationship generation outside accepted `add` from `deck` to `hand` actions.
+- Relationship generation outside supported `add` from `deck` to `hand` actions.
 - Indirect combo discovery.
 - Full natural-language understanding of every card text nuance.
 - Cost, restriction, ruling, or competitive legality analysis.
@@ -63,7 +63,7 @@ The MVP must allow users to:
 
 - The first screen should be the useful search experience, not a marketing landing page.
 - Public results should favor correctness over quantity.
-- Public searcher results must show only `accepted` relationships.
+- Public searcher results should use persisted precomputed relationships. If a relationship exists, it is considered valid for the current rule version.
 - Normal user requests must never scan every card text.
 - Keep the initial Deck-to-hand focus narrow enough that rule quality can be tested well.
 - Start rule and importer validation from fixtures, mock payloads, or curated test cards. Use the full external dataset only after importer and rule failures are easy to debug.

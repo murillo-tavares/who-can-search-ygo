@@ -47,7 +47,7 @@ Store enough data to evaluate whether a target card satisfies search criteria:
 - raw source payload;
 - import timestamps.
 
-All imported cards should remain in the database for idempotent sync and reevaluation. Relationship preprocessing should use accepted `card_selectors`, not raw card text.
+All imported cards should remain in the database for idempotent sync and reevaluation. Relationship preprocessing should use persisted `card_selectors`, not raw card text.
 
 Keep the latest raw upstream payload for audit/debugging. Query performance should come from normalized fields, indexes, and precomputed relationships.
 
@@ -65,11 +65,10 @@ Each extracted effect should record:
 - action tags;
 - PSCT-derived text segments and offsets;
 - ordered parsed actions in `actions_json`;
-- status and optional status reason;
 - effect hash;
 - extraction timestamp.
 
-For the MVP, only accepted effects with a resolution action where `action_kind = move_card`, `verb = add`, `config.from = deck`, and `config.to = hand` can produce public searcher results.
+For the MVP, only persisted effects with a resolution action where `action_kind = move_card`, `verb = add`, `config.from = deck`, and `config.to = hand` can produce public searcher results.
 
 Actions should model what the effect actually does. MVP support is `move_card` with:
 
@@ -110,7 +109,7 @@ For PSCT-style effects:
 - If there is `:` but no `;`, text after `:` is the resolving effect.
 - If there is `;` but no `:`, text before `;` is activation text and text after `;` is the resolving effect.
 
-The first supported extraction should match against the resolving effect segment, not activation condition or cost text. If the resolving segment contains `Add ... from your Deck to your hand`, create an accepted extracted effect with action tag `add`, a `move_card` resolution action, quantity, and target selector references.
+The first supported extraction should match against the resolving effect segment, not activation condition or cost text. If the resolving segment contains a fully supported `Add ... from your Deck to your hand` pattern, create an extracted effect with action tag `add`, a `move_card` resolution action, quantity, and target selector references.
 
 Use periods (`.`), line breaks, and bullet markers as candidate effect-block boundaries, but treat this as a heuristic. A sentence may be a continuation or restriction for the previous effect, especially when it uses phrases such as `this effect`, `that target`, or conditions that must remain true through resolution. Do not assume every period creates an independent effect.
 
@@ -128,15 +127,14 @@ Persist selector-target relationships with:
 - target card ID;
 - relationship version;
 - match kind;
-- status and optional status reason;
 - relationship hash;
 - processed timestamp.
 
-Only `accepted` relationships should be shown publicly.
+Persisted relationships are valid for public searcher results.
 
-Public searcher queries should filter relationships by status and target card, then join accepted extracted effects whose `actions_json` references the relationship selector and matches the MVP action scope. Request handling should not inspect card text.
+Public searcher queries should filter relationships by target card, then join extracted effects whose `actions_json` references the relationship selector and matches the MVP action scope. Request handling should not inspect card text.
 
-Relationship preprocessing should build relationships from accepted `card_selectors`. It should not discover candidate searchers by scanning raw card text.
+Relationship preprocessing should build relationships from persisted `card_selectors`. It should not discover candidate searchers by scanning raw card text.
 
 ## Rule Engine Requirements
 
@@ -182,9 +180,10 @@ Use these examples to guide early parser and matcher tests. Prefer curated fixtu
 
 Do not attempt full natural-language understanding in the MVP.
 
-When a card text contains unsupported wording, ambiguous scope, or criteria the engine cannot safely model:
+When a card text contains unsupported wording, ambiguous scope, or criteria the engine cannot fully and safely model:
 
-- store a supported extracted effect as `needs_review` when the parser can identify the effect family but cannot safely accept the normalized criteria; or
-- create no extracted effect when the wording is outside currently supported rules.
+- create no extracted effect;
+- create no selector; and
+- create no relationship.
 
-Do not silently create accepted relationships from ambiguous text.
+The MVP parser should not persist partial extracted effects. If it cannot parse 100% of the supported action and selector semantics, it should ignore that candidate block.
