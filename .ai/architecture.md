@@ -25,9 +25,10 @@ Database:
 
 - PostgreSQL.
 - `pg_trgm` for tolerant card-name lookup.
-- JSONB for upstream raw payload audit/debugging.
-- Indexed extracted effect fields, such as action, source zone, destination zone, parser version, and status.
-- Indexed relationship fields for target card, action, source zone, destination zone, and status.
+- JSONB for upstream raw payloads, aliases, text segments, parsed actions, and selector criteria.
+- `card_selectors` for reusable target-card criteria.
+- `search_relationships` for precomputed selector-to-target matches.
+- Indexed status/version/hash fields for effects, selectors, and relationships.
 
 Local infrastructure:
 
@@ -47,6 +48,7 @@ Start with this structure:
   engineering-rules.md
   open-questions.md
   product.md
+  schema.md
 backend/
   cmd/
     api/
@@ -78,6 +80,8 @@ AGENTS.md
 
 Keep backend and frontend separate. Shared generated API types may be introduced later, but the backend must not depend on frontend tooling.
 
+Use `.ai/schema.md` as the logical schema contract before migrations exist. Once migrations are implemented, they become the executable source of truth and should stay aligned with `.ai/schema.md`.
+
 ## Backend Boundaries
 
 - HTTP handlers parse requests and write responses.
@@ -105,7 +109,6 @@ Response standards:
 - Use `snake_case` API fields.
 - Errors include a stable code and human-readable message.
 - Public endpoints must not expose raw upstream payloads.
-- Searcher results only need to indicate matching cards in the MVP; they should not include matched reasoning unless a later version requires it.
 
 ## Background Work
 
@@ -124,9 +127,8 @@ Deployment should use the current prepared database state for the MVP. Card sync
 Normal public lookups should be index-friendly and relationship-driven:
 
 - Card name search may query the card table.
-- Searcher results must read precomputed relationships, not card text.
-- The MVP searcher query defaults to relationships with action `add`, source `deck`, destination `hand`, and `accepted` status.
-- Future filters should use persisted action, source zone, and destination zone fields, not reparsed text.
-- Relationship preprocessing should read supported extracted effects rather than scanning card text.
+- Searcher results must read precomputed selector-target relationships, not card text.
+- The MVP searcher query starts from `accepted` relationships for the target card, then finds accepted extracted effects whose `actions_json` references the relationship selector with `action_kind = move_card`, `verb = add`, `config.from = deck`, and `config.to = hand`.
+- Relationship preprocessing should match target cards from `card_selectors`, not scan raw card text.
 - Imported cards remain available as target cards regardless of whether they currently have extracted effects.
 - User reports may be anonymous, but the API must include basic spam protection such as rate limiting, validation, or another lightweight abuse-control mechanism.

@@ -11,13 +11,14 @@ Before making changes, read:
 1. `.ai/product.md`
 2. `.ai/architecture.md`
 3. `.ai/data-and-rules.md`
-4. `.ai/engineering-rules.md`
-5. `.ai/decisions.md`
-6. `.ai/open-questions.md`
+4. `.ai/schema.md`
+5. `.ai/engineering-rules.md`
+6. `.ai/decisions.md`
+7. `.ai/open-questions.md`
 
 ## Project Mission
 
-Who Can Search YGO helps identify which Yu-Gi-Oh! cards can search or move a selected target card from one zone to another.
+Who Can Search YGO identifies which Yu-Gi-Oh! cards can add a selected target card from the Deck to the hand.
 
 ```txt
 Who can get this Yu-Gi-Oh! card from the Deck to the hand?
@@ -29,9 +30,7 @@ The primary/default experience answers which cards can add a target card from th
 Add ... from your Deck to your hand
 ```
 
-The application should support broader search-like filters over time, based on action, source zone, and destination zone. The default filters are `add`, `from Deck`, and `to hand`. Later filters may include `send` from Deck to GY, `add` from GY to hand, `special_summon` from Deck to field, `banish` from Deck to banishment, or `destroy` from another zone to GY.
-
-Cards may have multiple extracted effect records. The model should preserve action, source zone, and destination zone so public search can default to Deck-to-hand add effects while later versions can let users switch to flows such as sending from Deck to GY.
+Cards may have multiple extracted effect records. Effects store parsed actions in `actions_json`; target matching is reused through `card_selectors` and `search_relationships`.
 
 Rule parsing should read card text and persist supported extracted effects. Relationship preprocessing should consume those extracted effects instead of discovering candidates by scanning card text.
 

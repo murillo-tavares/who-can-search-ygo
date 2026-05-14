@@ -60,7 +60,7 @@ Rationale:
 Consequences:
 
 - Sync/preprocessing must be part of the core backend workflow.
-- Relationship rows need action, source zone, destination zone, preprocessing version, and status.
+- Relationship rows match reusable selectors to target cards. Action scope stays on extracted effect actions.
 
 ## ADR-004: Use CLI Workflows For MVP Sync And Preprocessing
 
@@ -101,7 +101,6 @@ Consequences:
 - Keep source-specific code isolated in the importer.
 - YGOPRODeck API v7 remains a candidate source to evaluate.
 - Keep raw payloads for audit/debugging.
-- Treat official Konami card text as canonical when wording conflicts appear.
 
 ## ADR-006: Use Extracted Effects As Preprocessing Input
 
@@ -119,9 +118,9 @@ Rationale:
 
 Consequences:
 
-- Extracted effects need action, source zone, destination zone, the original card text fragment, parser version, status, and normalized condition data.
+- Extracted effects need parser version, review status, text segments, action tags, and `actions_json` objects that reference reusable selectors.
 - Public searcher queries rely on accepted precomputed relationships, not on card text.
-- Re-extraction must be able to add, update, or remove effect rows when card text changes, parser versions change, or supported action/source/destination flows expand.
+- Re-extraction must be able to add, update, or remove effect rows when card text changes, parser versions change, or supported action families expand.
 
 ## ADR-007: Let The Selected Source Define The Initial Card Universe
 
@@ -149,23 +148,19 @@ Status: accepted
 
 Decision:
 
-Persist extracted card effects as structured records, separate from precomputed target relationships. Each card can have multiple effect records, each scoped by action, source zone, destination zone, parser version, status, and normalized condition data.
+Persist parsed effects separately from selector-target relationships. Store text segments and ordered parsed actions in `extracted_effects`; store reusable target criteria in `card_selectors`.
 
 Rationale:
 
-- The system needs to explain and reevaluate why a card can search another card.
-- The MVP supports Deck-to-hand add effects, but the schema should be ready for future filters such as adding from the GY, sending from Deck to the GY, Special Summoning from the Deck, banishing from the Deck, or destroying from another zone to the GY.
-- Action is an independent persisted dimension. Initial action values include `add`, `send`, `banish`, `special_summon`, and `destroy`.
-- Each extracted effect should keep the original text fragment that produced it, with location metadata when practical, so parser output can be debugged and reviewed later.
-- JSONB can store audit-friendly rule expressions while Go code keeps typed parser and matcher structs.
-- Structured conditions make future review, admin tools, and rule version migrations easier.
+- Parser output needs review, versioning, and regeneration.
+- Public search should reuse precomputed selector-target rows.
+- JSONB stores audit shape; Go structs remain the rule-engine model.
 
 Consequences:
 
-- Rule parsing must produce typed effects that can serialize to normalized JSON.
-- Rule parsing should use PSCT punctuation to separate activation condition, activation text, and resolving effect before matching supported effect patterns.
-- Relationship preprocessing should derive target rows from extracted effects, not directly from raw card text.
-- Non-default action/source/destination flows may be stored for audit or future use, but should not generate public relationships until explicitly supported.
+- Rule parsing must produce typed effects that serialize to `text_segments_json` and `actions_json`.
+- Rule parsing should use PSCT punctuation before matching supported effect patterns.
+- Relationship preprocessing should derive target rows from accepted selectors referenced by accepted `actions_json` entries with `action_kind = move_card`.
 
 ## ADR-009: Use Latest Raw Payload Only For MVP
 
@@ -204,3 +199,43 @@ Consequences:
 
 - API response contracts should avoid exposing internal rule explanations for now.
 - Report endpoints need validation and basic spam mitigation.
+
+## ADR-011: Keep Application Enums In Code
+
+Status: accepted
+
+Decision:
+
+Store controlled vocabulary fields as text columns. Define allowed enum values in application code rather than creating database lookup tables for finite application vocabularies, including actions, zones, match kinds, statuses, and report types.
+
+Rationale:
+
+- These values are part of application behavior, parser support, and workflow logic.
+- Application enums keep validation close to the business logic that uses each value.
+- Avoids extra lookup tables that do not add value for the MVP.
+
+Consequences:
+
+- The application layer must validate enum values before writes.
+- Migrations do not need lookup tables for actions, zones, match kinds, statuses, report types, or similar small finite workflow values.
+- If an admin workflow later needs editable labels, ordering, or metadata, this can be revisited.
+
+## ADR-012: Use Build-Like Rule Version Identifiers
+
+Status: accepted
+
+Decision:
+
+Use explicit build-like identifiers for parser and relationship-preprocessor versions, starting with `rules-1` and `relationships-1`.
+
+Rationale:
+
+- Rule output needs traceability more than package-style semantic versioning.
+- Parser and relationship preprocessing can evolve independently.
+- Short named identifiers are easy to store, compare, and read in audit data.
+
+Consequences:
+
+- `parser_version` values should look like `rules-1`, `rules-2`, and so on.
+- `relationship_version` values should look like `relationships-1`, `relationships-2`, and so on.
+- Any change that can alter extracted effects or generated relationships should bump the relevant identifier.

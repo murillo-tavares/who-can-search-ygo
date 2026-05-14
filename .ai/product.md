@@ -2,15 +2,15 @@
 
 ## Product
 
-Who Can Search YGO is a web application for discovering which Yu-Gi-Oh! cards can search or move a selected target card from one zone to another.
+Who Can Search YGO is a web application for discovering which Yu-Gi-Oh! cards can add a selected target card from the Deck to the hand.
 
 The core user question is:
 
 ```txt
-Who can get this card from one place to another?
+Who can add this card from the Deck to the hand?
 ```
 
-The primary product focus is the classic search question: which cards can add a target card from the Deck to the hand. The default public filters should be action `add`, source `deck`, and destination `hand`.
+The MVP answers the classic search question: which cards can add a target card from the Deck to the hand.
 
 The first supported wording family is:
 
@@ -18,21 +18,13 @@ The first supported wording family is:
 Add ... from your Deck to your hand
 ```
 
-The application should not assume Deck-to-hand effects are the only search-like effects forever. Each card may have multiple extracted effect records scoped by action, source zone, and destination zone, so later versions can support filters such as adding from the GY, sending from Deck to the GY, Special Summoning from the Deck, banishing from the Deck, or destroying from another zone to the GY.
-
-Supported action values should include:
-
-- `add`;
-- `send`;
-- `banish`;
-- `special_summon`;
-- `destroy`.
+The data model keeps parsed effect actions separate from target relationships so normal requests never parse card text.
 
 ## Audience
 
 The initial audience is Yu-Gi-Oh! players, deck builders, content creators, and competitive researchers.
 
-The product should work for casual and advanced players, but all terminology, card text, and card data must follow official English Yu-Gi-Oh! wording.
+The product should work for casual and advanced players, but all terminology, card text, and card data must follow official English Yu-Gi-Oh! wording from the selected source.
 
 ## MVP Scope
 
@@ -56,8 +48,8 @@ The MVP must allow users to:
 
 ## Out Of Scope For MVP
 
-- Public result filters outside the default Deck-to-hand add flow, such as adding from GY to hand, sending from Deck to GY, Special Summoning from Deck to field, banishing from Deck, or destroying from another zone to GY.
-- Relationship generation for non-default action/source/destination flows unless explicitly added through a scope change.
+- Public result filters outside the default Deck-to-hand add flow.
+- Relationship generation outside accepted `add` from `deck` to `hand` actions.
 - Indirect combo discovery.
 - Full natural-language understanding of every card text nuance.
 - Cost, restriction, ruling, or competitive legality analysis.
@@ -74,7 +66,7 @@ The MVP must allow users to:
 - Public searcher results must show only `accepted` relationships.
 - Normal user requests must never scan every card text.
 - Keep the initial Deck-to-hand focus narrow enough that rule quality can be tested well.
-- Start rule and importer validation from a small local dataset, mock payloads, or curated test cards. Do not rely on the full external API dataset until the importer, rule engine, and review workflow are stable enough to evaluate results confidently.
+- Start rule and importer validation from fixtures, mock payloads, or curated test cards. Use the full external dataset only after importer and rule failures are easy to debug.
 - The UI should feel immersive and expressive while staying useful: prefer fluid interactions, thoughtful transitions, and creative visual treatment when they improve the search experience.
 
 ## Language Standard
@@ -91,4 +83,4 @@ Everything in the project must be written in English:
 - UI text;
 - internal technical terminology.
 
-Card names and card text must use official English wording.
+Card names and card text must use official English wording from the selected source.

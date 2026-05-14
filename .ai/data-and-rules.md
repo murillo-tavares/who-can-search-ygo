@@ -12,51 +12,44 @@ Guidelines:
 - Store imported data locally.
 - Respect documented source rate limits.
 - Hotlink card images initially to simplify the MVP.
-- Revisit image downloading, caching, or re-hosting in a later version if performance, reliability, or source terms require it.
-- Treat the official Konami Yu-Gi-Oh! card database as canonical when wording conflicts are found.
 
 Initial ingestion assumption:
 
 - Use the available cards returned by the selected API/dataset once the source is resolved.
-- The selected source or local mock dataset defines the card universe for the MVP.
-- Do not add special handling for TCG versus OCG, Master Duel, upcoming cards, Rush Duel, Speed Duel, Speed Spell variants, skill cards, or other variants until scope changes require it.
-- Store format availability when available so ingestion scope can expand later.
+- The selected source or local fixture dataset defines the MVP card universe.
+- Do not add special variant handling until scope changes require it.
 
 ## Card Data
 
 Store enough data to evaluate whether a target card satisfies search criteria:
 
 - internal ID;
-- upstream passcode/API ID;
+- upstream source and ID;
+- passcode;
 - Konami ID when available;
 - name;
 - normalized name;
+- aliases and normalized exact-name aliases;
 - card type;
 - frame type;
 - official English card text;
 - race/monster type;
+- monster categories;
+- Spell/Trap type;
 - attribute;
 - ATK;
 - DEF;
-- level or rank;
-- pendulum scale;
+- level;
+- rank;
 - link rating;
-- link markers;
 - archetype;
-- card images and metadata;
-- card sets and printings;
-- banlist information when available;
-- format availability when available;
-- release dates when available;
-- alias or "treated as" data when available;
-- normalized alias or "treated as" metadata when rules require it;
-- whether the card has an effect when available;
+- mentioned official card names;
 - raw source payload;
 - import timestamps.
 
-All imported cards should remain in the database for idempotent sync and future reevaluation. Relationship preprocessing should start from extracted effect rows that match the supported action/source/destination scope.
+All imported cards should remain in the database for idempotent sync and reevaluation. Relationship preprocessing should use accepted `card_selectors`, not raw card text.
 
-Keep the latest raw upstream payload for audit/debugging unless a future requirement needs historical snapshots. Query performance should come from normalized fields, indexes, and precomputed relationship tables, not from querying raw payload history.
+Keep the latest raw upstream payload for audit/debugging. Query performance should come from normalized fields, indexes, and precomputed relationships.
 
 ## Extracted Effects
 
@@ -64,44 +57,41 @@ Persist extracted effects separately from target relationships. A single card ca
 
 The parser should read card text and register effects supported by the current application rules. When supported rule coverage expands, rerun extraction for affected cards to create newly supported effect records.
 
-Each effect should record:
+Each extracted effect should record:
 
 - searcher card ID;
-- action, such as `add`, `send`, `banish`, `special_summon`, or `destroy`;
-- source zone, such as `deck`, `gy`, `banishment`, or `extra_deck`;
-- destination zone, such as `hand`, `field`, `gy`, or `banishment`;
-- search type, such as `exact_name`, `criteria`, `archetype`, or `manual`;
-- original card text fragment that produced the extracted effect;
-- original text location metadata when practical, such as start and end offsets within the card text;
-- normalized condition JSON;
-- parser rule ID or pattern ID;
-- parser/rule version;
-- status, such as `accepted`, `needs_review`, or `invalid`;
-- reason when review or invalid status applies;
-- processed timestamp.
+- parser version;
+- effect type;
+- action tags;
+- PSCT-derived text segments and offsets;
+- ordered parsed actions in `actions_json`;
+- status and optional status reason;
+- effect hash;
+- extraction timestamp.
 
-For the MVP, only effects with action `add`, source zone `deck`, and destination zone `hand` can produce public accepted search relationships. Other recognized action/source/destination flows may be stored for audit or future filters, but they should not generate public relationships until that scope is explicitly added.
+For the MVP, only accepted effects with a resolution action where `action_kind = move_card`, `verb = add`, `config.from = deck`, and `config.to = hand` can produce public searcher results.
 
-Condition JSON should be a small rule expression, not arbitrary raw text. Prefer predictable operators and fields, for example:
+Actions should model what the effect actually does. MVP support is `move_card` with:
+
+- `verb = add`;
+- `config.from = deck`;
+- `config.to = hand`;
+- quantity;
+- target selectors referencing `card_selectors`.
+
+Quantities should preserve card text semantics:
 
 ```json
-{
-  "all": [
-    { "field": "name", "op": "eq", "value": "Dark Magician" }
-  ]
-}
+{ "kind": "exactly", "value": 1 }
 ```
 
 ```json
-{
-  "all": [
-    { "field": "card_category", "op": "eq", "value": "monster" },
-    { "field": "atk", "op": "lte", "value": 1500 }
-  ]
-}
+{ "kind": "up_to", "max": 2, "unit": "copies" }
 ```
 
-Core rule logic should use typed structs. JSON is the persistence and audit format for extracted criteria, not a replacement for typed parser and matcher code. The original text fragment is for debugging, review, and rule-quality audits; matching should use structured fields and normalized conditions.
+Target criteria must live in reusable `card_selectors`, not inside raw action text. Criteria use predictable fields and operators from `.ai/schema.md`.
+
+Core rule logic should use typed structs. JSONB is persistence/audit format, not the core rule model.
 
 ## Card Text Segmentation
 
@@ -120,38 +110,33 @@ For PSCT-style effects:
 - If there is `:` but no `;`, text after `:` is the resolving effect.
 - If there is `;` but no `:`, text before `;` is activation text and text after `;` is the resolving effect.
 
-The first supported extraction should match against the resolving effect segment, not against activation condition or cost text. For example, if the resolving segment contains `Add ... from your Deck to your hand`, create an extracted effect with action `add`, source `deck`, and destination `hand`.
+The first supported extraction should match against the resolving effect segment, not activation condition or cost text. If the resolving segment contains `Add ... from your Deck to your hand`, create an accepted extracted effect with action tag `add`, a `move_card` resolution action, quantity, and target selector references.
 
 Use periods (`.`), line breaks, and bullet markers as candidate effect-block boundaries, but treat this as a heuristic. A sentence may be a continuation or restriction for the previous effect, especially when it uses phrases such as `this effect`, `that target`, or conditions that must remain true through resolution. Do not assume every period creates an independent effect.
 
 When scanning candidate blocks:
 
 - parse each candidate block using the PSCT punctuation rules above;
-- extract supported effects from the resolving effect segment;
-- skip candidate blocks whose resolving effect segment does not match a supported action/source/destination pattern;
-- preserve the original text fragment for every extracted effect.
+- extract supported effects from the resolving effect segment into typed structs;
+- skip candidate blocks whose resolving effect segment does not match a supported parser pattern;
 
 ## Search Relationships
 
-Persist precomputed relationships derived from supported extracted effects with:
+Persist selector-target relationships with:
 
-- searcher card ID;
+- card selector ID;
 - target card ID;
-- extracted effect ID;
-- action;
-- source zone;
-- destination zone;
-- match kind, such as `exact_name`, `criteria`, or `manual`;
-- matched criteria JSON;
-- status, such as `accepted`, `needs_review`, or `invalid`;
-- preprocessing version;
+- relationship version;
+- match kind;
+- status and optional status reason;
+- relationship hash;
 - processed timestamp.
 
 Only `accepted` relationships should be shown publicly.
 
-Public searcher queries should filter relationships by status, action, source zone, and destination zone. The default public query uses status `accepted`, action `add`, source `deck`, and destination `hand`. Request handling should not inspect card text.
+Public searcher queries should filter relationships by status and target card, then join accepted extracted effects whose `actions_json` references the relationship selector and matches the MVP action scope. Request handling should not inspect card text.
 
-Relationship preprocessing should consider only extracted effects matching the relationship scope being generated, such as action `add`, source `deck`, and destination `hand` for the initial public search. It should not discover candidate searchers by scanning raw card text.
+Relationship preprocessing should build relationships from accepted `card_selectors`. It should not discover candidate searchers by scanning raw card text.
 
 ## Rule Engine Requirements
 
@@ -169,7 +154,7 @@ Implementation location:
 backend/internal/rules
 ```
 
-Represent extracted search effects as typed structs. Do not pass loosely shaped maps through core rule logic unless the data is genuinely dynamic.
+Represent extracted effects as typed structs. Do not pass loosely shaped maps through core rule logic unless the data is genuinely dynamic.
 
 ## Initial Rule Support
 
@@ -182,8 +167,8 @@ Support card text that can add from Deck to hand through:
 - Level criteria;
 - Rank criteria;
 - Link Rating criteria;
-- card category criteria such as Monster, Spell, or Trap;
-- archetype/family criteria when source data supports it reliably.
+- card type criteria such as Monster, Spell, or Trap;
+- archetype/family criteria when source data supports it reliably;
 - alias and "treated as" relationships when they affect whether a target card satisfies a search rule.
 
 Important early examples:
@@ -191,7 +176,7 @@ Important early examples:
 - `Illusion Magic` searching `Dark Magician`.
 - `Sangan` searching monsters with `1500 or less ATK`.
 
-These examples should guide early tests, but they do not have to be mandatory fixtures with that exact file structure. Prefer a small curated local dataset or mock source payloads while the importer and rule engine are still being built. Avoid using the full real API dataset for routine development tests until the implementation is stable enough to make failures easy to understand.
+Use these examples to guide early parser and matcher tests. Prefer curated fixtures or mock source payloads until full-dataset failures are easy to debug.
 
 ## Parser Boundaries
 
