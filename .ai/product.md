@@ -2,72 +2,94 @@
 
 ## Product
 
-Who Can Search YGO is a web application for discovering which Yu-Gi-Oh! cards can add a selected target card from the Deck to the hand.
+Who Can Search YGO is a web application for finding Yu-Gi-Oh! cards whose own effects can affect a selected target card.
 
-The core user question is:
+The first product question is:
 
 ```txt
-Who can add this card from the Deck to the hand?
+Which cards can add this selected card from the Deck to the hand?
 ```
 
-The MVP answers the classic search question: which cards can add a target card from the Deck to the hand.
-
-The first supported wording family is:
+The initial supported effect code is:
 
 ```txt
 Add ... from your Deck to your hand
 ```
 
-The data model keeps parsed effect actions separate from target relationships so normal requests never parse card text.
+Example:
+
+`Reinforcement of the Army` has:
+
+```txt
+Add 1 Level 4 or lower Warrior monster from your Deck to your hand.
+```
+
+For a target card that is a Level 4 or lower Warrior monster, the application should show `Reinforcement of the Army` as a result.
 
 ## Audience
 
-The initial audience is Yu-Gi-Oh! players, deck builders, content creators, and competitive researchers.
+The initial audience is:
 
-The product should work for casual and advanced players, but all terminology, card text, and card data must follow official English Yu-Gi-Oh! wording from the selected source.
+- Yu-Gi-Oh! players.
+- Deck builders.
+- Content creators.
+- Competitive researchers.
+
+The product should be useful for casual and advanced players while staying clear, fast, and trustworthy.
+
+All card names, card text, and card terminology must use official English wording from the selected data source.
 
 ## MVP Scope
 
 The MVP must allow users to:
 
-- Search for a card by name.
-- Choose a target card from search results.
-- List cards with precomputed relationships that can get the target card from the Deck to the hand.
-- Extract and store supported effect records from card text so relationship preprocessing can match targets from structured effect data.
-- Support exact-name search effects.
-- Support common criteria-based effects:
-  - card category, such as Monster, Spell, or Trap;
-  - monster type/race;
-  - Attribute;
-  - ATK and DEF thresholds;
-  - Level, Rank, and Link Rating;
-  - archetype when reliably represented by source data.
-- Maintain an internal card database populated from an external card API.
-- Precompute search relationships so normal user queries are fast.
-- Let users report incorrect or missing search results.
+- Search cards by name.
+- Select one target card.
+- Use the fixed `add_deck_to_hand` effect filter.
+- See all stored active card effects whose selector matches the selected target card.
+- See the matched source effect text so the UI can highlight why the source card appears.
+- See useful source card information in results.
+- Store an internal card catalog imported from an external card data source.
+- Store image URLs from the card data source without downloading images locally.
+- Store AI-extracted selectors available in the database.
+- Track which AI-supported processes each card has completed and which extraction version completed them.
+
+The application owns:
+
+- card catalog storage;
+- selector storage;
+- per-card AI processing metadata;
+- public search API;
+- frontend search experience.
+
+The application works with the card and extraction data currently available in the database. It does not need to know who produced AI extraction data, how that process runs, or how often it runs.
 
 ## Out Of Scope For MVP
 
-- Public result filters outside the default Deck-to-hand add flow.
-- Relationship generation outside supported `add` from `deck` to `hand` actions.
-- Indirect combo discovery.
-- Full natural-language understanding of every card text nuance.
-- Cost, restriction, ruling, or competitive legality analysis.
 - User login.
 - Favorites.
 - Deck builder.
-- Admin UI.
-- Card universes outside the selected initial API/dataset unless explicitly added through a scope change.
+- Public admin UI.
+- Live AI calls during public requests.
+- Full Yu-Gi-Oh! rules simulation.
+- Full PSCT parsing.
+- Exact activation legality.
+- Costs, rulings, restrictions, or chain interactions.
+- Indirect combo discovery.
+- Support for effect filters other than `add_deck_to_hand`.
+- Downloading, transforming, or storing card images locally.
 
 ## Product Principles
 
-- The first screen should be the useful search experience, not a marketing landing page.
+- The first screen should be the card search experience, not a marketing page.
 - Public results should favor correctness over quantity.
-- Public searcher results should use persisted precomputed relationships. If a relationship exists, it is considered valid for the current rule version.
-- Normal user requests must never scan every card text.
-- Keep the initial Deck-to-hand focus narrow enough that rule quality can be tested well.
-- Start rule and importer validation from fixtures, mock payloads, or curated test cards. Use the full external dataset only after importer and rule failures are easy to debug.
-- The UI should feel immersive and expressive while staying useful: prefer fluid interactions, thoughtful transitions, and creative visual treatment when they improve the search experience.
+- AI extraction is assistive, not authoritative.
+- Public results should use stored active extracted effects with resolved selectors.
+- Public requests must not call AI.
+- Public requests must not scan all card text.
+- Public requests may evaluate stored active selectors against the selected target card in real time.
+- Missing a relationship is better than showing an incorrect one.
+- Keep the first effect code narrow until the data model and extraction workflow are reliable.
 
 ## Language Standard
 

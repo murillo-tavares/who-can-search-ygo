@@ -4,10 +4,10 @@
 
 Backend:
 
-- Go 1.26.x or newer stable Go 1.x.
+- Go stable 1.x.
 - `net/http` with a small router such as `chi` if needed.
 - `pgx/v5` for PostgreSQL access.
-- `sqlc` for type-safe SQL code generation.
+- `sqlc` for type-safe SQL generation.
 - `goose` for migrations.
 - `log/slog` for logging.
 - Go `testing` for backend tests.
@@ -25,16 +25,12 @@ Database:
 
 - PostgreSQL.
 - `pg_trgm` for tolerant card-name lookup.
-- JSONB for upstream raw payloads, aliases, text segments, parsed actions, and selector criteria.
-- `card_selectors` for reusable target-card criteria.
-- `search_relationships` for precomputed selector-to-target matches.
-- Indexed version/hash fields for effects, selectors, and relationships.
+- JSONB for raw upstream card payloads and selector criteria.
 
 Local infrastructure:
 
 - Docker Compose.
 - PostgreSQL service from the beginning.
-- Redis only later if CLI/manual preprocessing is no longer enough.
 
 ## Repository Shape
 
@@ -52,15 +48,13 @@ Start with this structure:
 backend/
   cmd/
     api/
-    sync-cards/
-    preprocess-searches/
+    migrate/
   internal/
     app/
     config/
     httpapi/
     importer/
     postgres/
-    preprocessing/
     rules/
     service/
   migrations/
@@ -78,18 +72,18 @@ Makefile
 AGENTS.md
 ```
 
-Keep backend and frontend separate. Shared generated API types may be introduced later, but the backend must not depend on frontend tooling.
+Keep backend and frontend separate. The backend must not depend on frontend tooling.
 
-Use `.ai/schema.md` as the logical schema contract before migrations exist. Once migrations are implemented, they become the executable source of truth and should stay aligned with `.ai/schema.md`.
+Use `.ai/schema.md` as the logical schema contract before migrations exist. Once migrations are implemented, migrations become the executable source of truth and should stay aligned with `.ai/schema.md`.
 
 ## Backend Boundaries
 
 - HTTP handlers parse requests and write responses.
 - Services own application use cases.
-- Repositories/database packages own persistence.
-- Rule parsing and target matching live in `backend/internal/rules`.
+- Repository/database packages own persistence.
 - Import mapping lives in `backend/internal/importer`.
-- Preprocessing orchestration lives in `backend/internal/preprocessing`.
+- Selector normalization and matching live in `backend/internal/rules`.
+- AI provider orchestration is not part of the MVP application.
 
 Do not put business rules directly in handlers.
 
@@ -101,7 +95,8 @@ Public endpoints:
 - `GET /cards?query=...`
 - `GET /cards/{id}`
 - `GET /cards/{id}/searchers`
-- `POST /reports`
+
+Internal or CLI-oriented operations may be added later for imports and extraction writes, but public endpoints should stay small.
 
 Response standards:
 
@@ -112,23 +107,40 @@ Response standards:
 
 ## Background Work
 
-Use CLI commands for MVP:
+Use CLI commands for MVP operational work:
 
-- `backend/cmd/sync-cards`
-- `backend/cmd/preprocess-searches`
 - `backend/cmd/migrate`, if not using `goose` directly
 
-Do not introduce a queue or scheduler until there is a real need for distributed or recurring background work.
+The application works with the card and extraction data currently available in the database.
 
-Deployment should use the current prepared database state for the MVP. Card sync and search preprocessing are run separately, locally or through an explicit external workflow, not automatically as part of deploy.
+The schema includes:
+
+- extraction version;
+- effect code;
+- per-card completion metadata;
+- extracted effects;
+- selectors;
+
+Do not introduce queues, schedulers, Redis, or distributed workers until there is a real need.
 
 ## Query Model
 
-Normal public lookups should be index-friendly and relationship-driven:
+Normal public lookups should be index-friendly and selector-driven:
 
-- Card name search may query the card table.
-- Searcher results must read precomputed selector-target relationships, not card text.
-- The MVP searcher query starts from relationships for the target card, then finds extracted effects whose `actions_json` references the relationship selector with `action_kind = move_card`, `verb = add`, `config.from = deck`, and `config.to = hand`.
-- Relationship preprocessing should match target cards from `card_selectors`, not scan raw card text.
-- Imported cards remain available as target cards regardless of whether they currently have extracted effects.
-- User reports may be anonymous, but the API must include basic spam protection such as rate limiting, validation, or another lightweight abuse-control mechanism.
+- Card name search queries the `cards` table.
+- Searcher results read active extracted effects with resolved stored selectors.
+- Searcher results evaluate each stored selector against the selected target card at request time.
+- Searcher results must not scan all card text.
+- Searcher results must not call AI.
+- The MVP does not store precomputed selector-to-card relationships.
+
+Target search flow:
+
+1. Load the selected target card by ID.
+2. Load active extracted effects with `selector_status = resolved` for `add_deck_to_hand`.
+3. Evaluate each effect selector against the target card using deterministic rule code.
+4. Return source cards whose selectors match, including the matched `card_effects.effect_text`.
+
+This is acceptable for the MVP because only stored active selectors are evaluated, not all card text.
+
+If real-time selector evaluation becomes too slow, add a new decision before introducing precomputed relationships.

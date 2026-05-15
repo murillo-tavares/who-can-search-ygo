@@ -1,6 +1,8 @@
 # Architecture Decisions
 
-This file records durable decisions. Keep entries short and update them when decisions change.
+This file records durable decisions.
+
+Keep entries short and update them when decisions change.
 
 ## ADR-001: Use Go For Backend
 
@@ -8,22 +10,30 @@ Status: accepted
 
 Decision:
 
-Use Go for backend API, import commands, and preprocessing commands.
+Use Go for the backend API, import commands, migrations wrapper, and deterministic selector matching.
 
 Rationale:
 
 - Fast runtime and low operational overhead.
-- Simple deployment as compiled binaries.
-- Good standard library for HTTP, concurrency, CLI commands, and tests.
+- Simple compiled deployment.
 - Explicit code style that is easy for humans and AI agents to maintain.
-- Strong fit for deterministic rule parsing and relationship preprocessing.
+- Strong fit for deterministic rule evaluation.
 
-Consequences:
+## ADR-002: Use React For Frontend
 
-- Frontend may still use TypeScript.
-- SQL and schema boundaries should stay explicit.
+Status: accepted
 
-## ADR-002: Use PostgreSQL As Primary Database
+Decision:
+
+Use React, Vite, and TypeScript for the frontend.
+
+Rationale:
+
+- Fast MVP iteration.
+- Strong ecosystem for search UI and async API state.
+- TypeScript improves API contract safety.
+
+## ADR-003: Use PostgreSQL As Primary Database
 
 Status: accepted
 
@@ -33,209 +43,147 @@ Use PostgreSQL as the application database.
 
 Rationale:
 
-- Search relationships are naturally relational.
-- PostgreSQL supports strong indexing for lookup and joins.
+- Card data and extracted effects are relational.
 - `pg_trgm` supports tolerant card-name search.
-- JSONB can store raw upstream payloads.
+- JSONB supports raw upstream card payloads and selector criteria.
 
-Consequences:
-
-- No separate search engine in the MVP.
-- Query performance should be solved first with indexes and precomputed tables.
-
-## ADR-003: Precompute Search Relationships
+## ADR-004: Use Stored AI Extraction Data
 
 Status: accepted
 
 Decision:
 
-Normal user searches must read precomputed relationship rows instead of scanning card text.
+The application works with extraction data currently available in the database.
+
+The application stores:
+
+- cards;
+- supported effect codes;
+- per-card AI processing metadata;
+- extracted effects and selectors.
 
 Rationale:
 
-- User queries must be fast.
-- Rule parsing can be expensive and should run outside normal requests.
-- Precomputed rows allow fast lookup, audit hashes, and versioning.
+- Keeps MVP application focused on card search behavior.
+- Avoids coupling the application to a specific extraction runner.
+- Still preserves auditability and reprocessing support.
 
-Consequences:
-
-- Sync/preprocessing must be part of the core backend workflow.
-- Relationship rows match reusable selectors to target cards. Action scope stays on extracted effect actions.
-
-## ADR-004: Use CLI Workflows For MVP Sync And Preprocessing
+## ADR-005: Track Completed AI Processing On Cards
 
 Status: accepted
 
 Decision:
 
-Use manual CLI commands for card synchronization and search relationship preprocessing in the MVP. Deployment uses the current prepared database state and does not automatically run sync or preprocessing.
+Track latest completed AI processing in `cards.ai_processing`.
+
+Store effect code, extraction version, processed timestamp, and result count. Do not store extraction runs.
 
 Rationale:
 
-- Lower complexity than queues, workers, admin UI, or schedulers.
-- Matches the MVP requirement for a technical/admin workflow.
-- Easy to run locally and in deployment jobs.
+- Supports resume after interruption.
+- Shows which cards were already processed.
+- Allows reprocessing with new extraction versions.
+- Identifies newly imported cards needing extraction.
+- Avoids tables that only record operational history not needed by the MVP.
 
 Consequences:
 
-- No Redis or queue at project start.
-- A future admin UI can wrap the same service logic.
-- Sync and preprocessing may run locally or through an explicit external workflow outside deploy.
+- Missing metadata means processing is still needed.
+- Version mismatch means reprocessing is needed.
+- Historical run counts are intentionally unavailable.
 
-## ADR-005: Choose Initial Data Source
-
-Status: proposed
-
-Decision:
-
-Choose a single initial bulk card-data ingestion source before heavy importer implementation.
-
-Rationale:
-
-- The importer and payload mapping should be designed around a concrete source.
-- Criteria matching depends on source field quality and consistency.
-- The project still needs to compare available Yu-Gi-Oh! data sources.
-
-Consequences:
-
-- Keep source-specific code isolated in the importer.
-- YGOPRODeck API v7 remains a candidate source to evaluate.
-- Keep raw payloads for audit/debugging.
-
-## ADR-006: Use Extracted Effects As Preprocessing Input
+## ADR-006: Use Active Resolved Effects For Public Results
 
 Status: accepted
 
 Decision:
 
-Parse card text into supported extracted effect records, and make relationship preprocessing consume those extracted effects as its candidate input.
+Public search uses active extracted effects with `selector_status = resolved`.
+
+Unresolved effects may be stored for audit/debugging when a supported effect is detected but an exact selector cannot be defined.
 
 Rationale:
 
-- Sync should remain idempotent and preserve cards for future reevaluation.
-- Preprocessing should not waste work reparsing card text during relationship generation.
-- A card that cannot search other cards may still be a valid target card.
+- Incorrect records can be disabled with `is_active = false`.
+- Unresolved records do not appear in public search results.
 
-Consequences:
-
-- Extracted effects need parser version, text segments, action tags, and `actions_json` objects that reference reusable selectors.
-- Public searcher queries rely on precomputed relationships, not on card text.
-- Re-extraction must be able to add, update, or remove effect rows when card text changes, parser versions change, or supported action families expand.
-
-## ADR-007: Let The Selected Source Define The Initial Card Universe
+## ADR-007: Store Image URLs Only
 
 Status: accepted
 
 Decision:
 
-The MVP imports and exposes the available cards returned by the selected API or local test dataset. Do not add special TCG, OCG, Master Duel, upcoming-card, Rush Duel, Speed Duel, Speed Spell, skill-card, or variant filtering until a scope change requires it.
+Store upstream image URLs and hotlink images in the MVP.
 
 Rationale:
 
-- The initial data source is still unresolved.
-- The MVP should avoid premature filtering rules that depend on source-specific fields.
-- The core rule engine can be validated against a small curated dataset first.
+- Avoids image storage and processing complexity.
+- Keeps card import focused on metadata and selector fields.
 
-Consequences:
-
-- The selected source or fixture dataset is responsible for providing the cards considered by the app.
-- Variant-specific exclusions can be added later as explicit scope changes.
-- Import mapping should preserve source metadata when available, but the MVP does not need out-of-scope detection fields before a source is selected.
-
-## ADR-008: Persist Extracted Effects Separately From Relationships
+## ADR-008: Use Structured Selector Expressions
 
 Status: accepted
 
 Decision:
 
-Persist parsed effects separately from selector-target relationships. Store text segments and ordered parsed actions in `extracted_effects`; store reusable target criteria in `card_selectors`.
+Represent selectors as structured JSON expression trees with comparison and logical nodes.
+
+Example semantics:
+
+```txt
+name = 'Dark Magician' OR (card_type IN ('Spell', 'Trap') AND mentions CONTAINS 'Dark Magician')
+```
 
 Rationale:
 
-- Parser output needs versioning and regeneration.
-- Public search should reuse precomputed selector-target rows.
-- JSONB stores audit shape; Go structs remain the rule-engine model.
+- Handles mixed `and`/`or` selector logic without special-case fields.
+- Maps naturally to player-readable conditions and SQL-like semantics.
+- Remains safer than storing raw SQL.
+- Keeps selector matching deterministic and validateable.
 
 Consequences:
 
-- Rule parsing must produce typed effects that serialize to `text_segments_json` and `actions_json`.
-- Rule parsing should use PSCT punctuation before matching supported effect patterns.
-- Relationship preprocessing should derive target rows from selectors referenced by `actions_json` entries with `action_kind = move_card`.
+- Selector validation must reject unknown fields, operators, and invalid value types.
+- Selector normalization and hashing must canonicalize expression trees.
+- Boolean nesting has no fixed depth limit, but malformed expression nodes must fail closed.
 
-## ADR-009: Use Latest Raw Payload Only For MVP
+## ADR-009: Use Stable Effect Codes
 
 Status: accepted
 
 Decision:
 
-Store the latest raw upstream payload for each imported card, not full historical source snapshots, unless a later requirement needs history.
+Use stable application-defined `effect_code` values.
 
 Rationale:
 
-- Normal queries should use normalized fields and precomputed relationships.
-- Historical snapshots are extra storage and complexity that do not improve MVP lookup performance.
-- Latest raw payloads are enough for audit/debugging during early implementation.
+- MVP has one supported filter: `add_deck_to_hand`.
+- Text codes keep processing metadata and effects simple.
 
 Consequences:
 
-- Import upserts replace the stored raw payload.
-- Any future historical audit table should be separate from public query paths.
+- Application code validates supported effect codes.
 
-## ADR-010: Keep MVP Public Responses Minimal
+## ADR-010: Use Kebab-Case Extraction Versions
 
 Status: accepted
 
 Decision:
 
-Use `snake_case` API fields. Public searcher results return matching cards only and do not include matched reasoning in the MVP. User reports may be anonymous but must have lightweight spam protection.
+Use extraction versions in this format:
+
+```txt
+<effect-code-kebab>-v<number>
+```
+
+Initial version:
+
+```txt
+add-deck-to-hand-v1
+```
 
 Rationale:
 
-- `snake_case` matches the current API default.
-- Reasoning can be added later without blocking the core search experience.
-- Anonymous reports reduce friction, but public endpoints need abuse controls.
-
-Consequences:
-
-- API response contracts should avoid exposing internal rule explanations for now.
-- Report endpoints need validation and basic spam mitigation.
-
-## ADR-011: Keep Application Enums In Code
-
-Status: accepted
-
-Decision:
-
-Store controlled vocabulary fields as text columns. Define allowed enum values in application code rather than creating database lookup tables for finite application vocabularies, including actions, zones, match kinds, and report types.
-
-Rationale:
-
-- These values are part of application behavior, parser support, and workflow logic.
-- Application enums keep validation close to the business logic that uses each value.
-- Avoids extra lookup tables that do not add value for the MVP.
-
-Consequences:
-
-- The application layer must validate enum values before writes.
-- Migrations do not need lookup tables for actions, zones, match kinds, report types, or similar small finite workflow values.
-- If an admin workflow later needs editable labels, ordering, or metadata, this can be revisited.
-
-## ADR-012: Use Build-Like Rule Version Identifiers
-
-Status: accepted
-
-Decision:
-
-Use explicit build-like identifiers for parser and relationship-preprocessor versions, starting with `rules-1` and `relationships-1`.
-
-Rationale:
-
-- Rule output needs traceability more than package-style semantic versioning.
-- Parser and relationship preprocessing can evolve independently.
-- Short named identifiers are easy to store, compare, and read in audit data.
-
-Consequences:
-
-- `parser_version` values should look like `rules-1`, `rules-2`, and so on.
-- `relationship_version` values should look like `relationships-1`, `relationships-2`, and so on.
-- Any change that can alter extracted effects or generated relationships should bump the relevant identifier.
+- Human-readable.
+- Tied to the effect code being extracted.
+- Simple to increment when extraction logic changes.

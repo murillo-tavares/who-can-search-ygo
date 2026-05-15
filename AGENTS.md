@@ -2,8 +2,6 @@
 
 This is the entry point for AI agents working on Who Can Search YGO.
 
-Keep this file short. Detailed context lives in `.ai/` so agents can load only what they need.
-
 ## Read Order
 
 Before making changes, read:
@@ -18,46 +16,47 @@ Before making changes, read:
 
 ## Project Mission
 
-Who Can Search YGO identifies which Yu-Gi-Oh! cards can add a selected target card from the Deck to the hand.
+Who Can Search YGO helps users find Yu-Gi-Oh! cards whose own effects can affect a selected target card.
+
+The initial MVP answers:
 
 ```txt
-Who can get this Yu-Gi-Oh! card from the Deck to the hand?
+Which cards can add this selected card from the Deck to the hand?
 ```
 
-The primary/default experience answers which cards can add a target card from the Deck to the hand, beginning with official English wording patterns like:
+The only initially supported effect code is:
 
 ```txt
 Add ... from your Deck to your hand
 ```
 
-Cards may have multiple extracted effect records. Effects store parsed actions in `actions_json`; target matching is reused through `card_selectors` and `search_relationships`.
-
-Rule parsing should read card text and persist only supported extracted effects. Unsupported or uncertain text should not create extracted effects, selectors, or relationships. Relationship preprocessing should consume persisted extracted effects instead of discovering candidates by scanning card text.
-
-Normal user queries must use precomputed relationships. Do not scan all card text during request handling.
+The application stores cards and AI-extracted effect selectors in its own database. Public search queries use those stored selectors in real time.
 
 ## Current Defaults
 
 - Backend: Go.
 - Frontend: React, Vite, TypeScript.
 - Database: PostgreSQL with `pg_trgm`.
-- Data source: unresolved; see `.ai/open-questions.md`.
-- Sync/preprocessing: manual CLI commands for MVP.
-- Public relationship results: persisted relationships are valid by default.
+- Card data source: unresolved.
+- Card images: hotlinked from the selected card data source.
+- AI extraction: use extraction data available in the database.
+- MVP public effect filter: `add_deck_to_hand`.
 
 ## Non-Negotiables
 
 - Keep backend and frontend as separate subprojects.
-- Keep rule parsing isolated, deterministic, testable, and versioned.
-- Keep extracted effects separate from precomputed target relationships.
-- Keep imports and preprocessing idempotent.
-- Preserve unrelated user changes.
+- Keep card import idempotent.
+- Keep stored AI extraction auditable and versioned.
+- Track which AI-supported processes each card has completed, including cards with no extracted result.
+- Normal public requests must not call AI.
+- Normal public requests must not scan every card text.
+- Normal public requests may evaluate stored selectors against the selected target card in real time.
 - Use English for documentation, code, identifiers, database names, API fields, comments, commits, UI text, and internal terminology.
 
 ## Where To Change Context
 
 - Product scope changes: update `.ai/product.md`.
 - Stack or architecture changes: update `.ai/architecture.md` and `.ai/decisions.md`.
-- Rule engine or data model changes: update `.ai/data-and-rules.md`.
+- Rule, selector, or data model changes: update `.ai/data-and-rules.md` and `.ai/schema.md`.
 - Coding/test workflow changes: update `.ai/engineering-rules.md`.
 - Unresolved decisions: update `.ai/open-questions.md`.
