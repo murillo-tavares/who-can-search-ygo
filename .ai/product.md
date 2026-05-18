@@ -47,7 +47,7 @@ The MVP must allow users to:
 - Select one target card.
 - Use the fixed `add_deck_to_hand` effect filter.
 - See all stored active card effects whose selector matches the selected target card.
-- See the matched source effect text so the UI can highlight why the source card appears.
+- See the matched source text and isolated action text so the UI can highlight why the source card appears.
 - See useful source card information in results.
 - Store an internal card catalog imported from an external card data source.
 - Store image URLs from the card data source without downloading images locally.

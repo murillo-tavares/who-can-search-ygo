@@ -266,9 +266,24 @@ Each extracted effect stores:
 - selector;
 - selector status;
 - extraction version;
-- source text fragment;
+- source text, copied exactly from the card text segment that contains the supported action;
+- optional condition text, copied exactly from the source segment without trailing punctuation;
+- optional cost text, copied exactly from the source segment without trailing punctuation;
+- isolated action text for the supported effect code;
+- optional restriction text, copied exactly from the source segment when relevant;
 - active flag;
 - timestamps.
+
+Text segment rules:
+
+- `source_text` is the full source segment that caused extraction.
+- `condition_text` records `if`, `when`, `during`, or similar timing/condition text.
+- `cost_text` records explicit costs such as `discard`, `pay`, `tribute`, `banish`, `send`, or `destroy`.
+- `action_text` is the isolated supported action, such as `Add ... from your Deck to your hand`.
+- `restriction_text` records post-action restrictions or locks, such as `also, for the rest of this turn...`.
+- Selector exclusions such as `except "Card Name"` belong in `action_text` and `selector_json`, not `restriction_text`.
+- These fields should preserve official wording and should not be summaries or paraphrases.
+- If a segment cannot be split confidently, keep `source_text` exact and leave uncertain split fields null.
 
 Only active extracted effects with `selector_status = resolved` are used in public results.
 

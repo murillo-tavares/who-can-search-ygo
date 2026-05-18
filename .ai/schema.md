@@ -191,11 +191,14 @@ Stores supported effects extracted from source cards.
 | `source_card_id` | uuid not null references `cards(id)` | Card containing the effect. |
 | `effect_code` | text not null | Supported effect code. |
 | `extraction_version` | text not null | Extraction version that produced this effect. |
-| `effect_text` | text not null | Source text fragment. |
+| `source_text` | text not null | Full official card text segment that caused extraction. |
+| `condition_text` | text null | Exact condition or timing text such as `If ...`, `When ...`, or `During ...`, without trailing punctuation. |
+| `cost_text` | text null | Exact cost text such as `Discard 1 card`, without trailing punctuation. |
+| `action_text` | text not null | Isolated supported action text, such as `Add ... from your Deck to your hand`. |
+| `restriction_text` | text null | Exact restriction or limitation text tied to the extracted effect. |
 | `selector_status` | text not null | Whether AI resolved an exact supported selector. |
 | `selector_json` | jsonb null | Canonical selector criteria when resolved. |
 | `selector_hash` | text not null | Stable hash of canonical selector. |
-| `condition_summary` | text null | Human-readable cost/condition summary. |
 | `ai_confidence` | numeric null | AI confidence score when provided. |
 | `is_active` | boolean not null default true | Whether this extracted effect is used in public results. |
 | `created_at` | timestamptz not null | Creation timestamp. |
@@ -211,14 +214,29 @@ Indexes and constraints:
 - index on `source_card_id`;
 - index on `effect_code, is_active, selector_status`;
 - index on `selector_hash`;
-- optional unique index on `source_card_id, effect_code, extraction_version, selector_hash, effect_text`.
+- optional unique index on `source_card_id, effect_code, extraction_version, selector_hash, source_text`.
+
+Text segment rules:
+
+- `source_text` is the full source segment that caused extraction.
+- `condition_text` records `if`, `when`, `during`, or similar timing/condition text.
+- `cost_text` records explicit costs such as `discard`, `pay`, `tribute`, `banish`, `send`, or `destroy`.
+- `action_text` is the isolated supported action.
+- `restriction_text` records post-action restrictions or locks, such as `also, for the rest of this turn...`.
+- Selector exclusions such as `except "Card Name"` belong in `action_text` and `selector_json`, not `restriction_text`.
+- These fields preserve official wording and must not be summaries or paraphrases.
+- If a segment cannot be split confidently, keep `source_text` exact and leave uncertain split fields null.
 
 Example:
 
 ```json
 {
   "effect_code": "add_deck_to_hand",
-  "effect_text": "Add 1 Level 4 or lower Warrior monster from your Deck to your hand.",
+  "source_text": "Add 1 Level 4 or lower Warrior monster from your Deck to your hand.",
+  "condition_text": null,
+  "cost_text": null,
+  "action_text": "Add 1 Level 4 or lower Warrior monster from your Deck to your hand.",
+  "restriction_text": null,
   "selector_status": "resolved",
   "selector_json": {
     "type": "logical",
@@ -238,7 +256,11 @@ Example with mixed alternatives:
 ```json
 {
   "effect_code": "add_deck_to_hand",
-  "effect_text": "Reveal 1 \"Dark Magician\" or 1 Spell/Trap that specifically lists the card \"Dark Magician\" in its text, among them, and add it to your hand.",
+  "source_text": "When this card is activated: Look at the top 3 cards of your Deck, then you can reveal 1 \"Dark Magician\" or 1 Spell/Trap that specifically lists the card \"Dark Magician\" in its text, among them, and add it to your hand, also place the remaining cards on top of your Deck in any order.",
+  "condition_text": "When this card is activated",
+  "cost_text": null,
+  "action_text": "Look at the top 3 cards of your Deck, then you can reveal 1 \"Dark Magician\" or 1 Spell/Trap that specifically lists the card \"Dark Magician\" in its text, among them, and add it to your hand, also place the remaining cards on top of your Deck in any order.",
+  "restriction_text": null,
   "selector_status": "resolved",
   "selector_json": {
     "type": "logical",
@@ -286,7 +308,7 @@ The public search query should:
 1. load target card by ID;
 2. load active `card_effects` where `effect_code = 'add_deck_to_hand'` and `selector_status = 'resolved'`;
 3. evaluate `selector_json` against the target card in application rule code;
-4. return matching source cards with the matched `effect_text`.
+4. return matching source cards with the matched `source_text` and `action_text`.
 
 If performance later requires precomputed relationships, add an ADR and schema migration.
 
