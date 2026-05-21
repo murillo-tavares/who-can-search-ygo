@@ -1,0 +1,1095 @@
+{
+  "metadata": {
+    "fixture_name": "minimal_add_deck_to_hand_catalog",
+    "source": "YGOPRODeck card pages and public Yu-Gi-Oh! card text",
+    "created_for": "MVP backend tests and local seed data",
+    "created_at": "2026-05-18T00:00:00Z"
+  },
+  "cards": [
+    {
+      "id": "00000000-0000-4000-8000-000000000001",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "2794",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Reinforcement of the Army",
+      "normalized_name": "reinforcement of the army",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "Add 1 Level 4 or lower Warrior monster from your Deck to your hand.",
+      "card_type": "Spell",
+      "frame_type": "Spell",
+      "race": null,
+      "attribute": null,
+      "monster_categories": [],
+      "spell_trap_type": "Normal",
+      "atk": null,
+      "def": null,
+      "level": null,
+      "rank": null,
+      "link_rating": null,
+      "archetype": null,
+      "mentions": [],
+      "image_url": null,
+      "ai_processing": {
+        "add_deck_to_hand": {
+          "version": "add-deck-to-hand-v1",
+          "processed_at": "2026-05-18T00:00:00Z",
+          "result_count": 1
+        }
+      },
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/reinforcement-of-the-army-2794"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000002",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "4036",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Fossil Dig",
+      "normalized_name": "fossil dig",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "Add 1 Level 6 or lower Dinosaur monster from your Deck to your hand.",
+      "card_type": "Spell",
+      "frame_type": "Spell",
+      "race": null,
+      "attribute": null,
+      "monster_categories": [],
+      "spell_trap_type": "Normal",
+      "atk": null,
+      "def": null,
+      "level": null,
+      "rank": null,
+      "link_rating": null,
+      "archetype": null,
+      "mentions": [],
+      "image_url": null,
+      "ai_processing": {
+        "add_deck_to_hand": {
+          "version": "add-deck-to-hand-v1",
+          "processed_at": "2026-05-18T00:00:00Z",
+          "result_count": 1
+        }
+      },
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/fossil-dig-4036"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000003",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "fire-formation-tenki",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Fire Formation - Tenki",
+      "normalized_name": "fire formation tenki",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "When this card is activated: You can add 1 Level 4 or lower Beast-Warrior monster from your Deck to your hand. All Beast-Warrior monsters you control gain 100 ATK.",
+      "card_type": "Spell",
+      "frame_type": "Spell",
+      "race": null,
+      "attribute": null,
+      "monster_categories": [],
+      "spell_trap_type": "Continuous",
+      "atk": null,
+      "def": null,
+      "level": null,
+      "rank": null,
+      "link_rating": null,
+      "archetype": "Fire Formation",
+      "mentions": [],
+      "image_url": null,
+      "ai_processing": {
+        "add_deck_to_hand": {
+          "version": "add-deck-to-hand-v1",
+          "processed_at": "2026-05-18T00:00:00Z",
+          "result_count": 1
+        }
+      },
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/fire-formation-tenki"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000004",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "10014",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Cynet Mining",
+      "normalized_name": "cynet mining",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "Send 1 card from your hand to the GY; add 1 Level 4 or lower Cyberse monster from your Deck to your hand. You can only activate 1 \"Cynet Mining\" per turn.",
+      "card_type": "Spell",
+      "frame_type": "Spell",
+      "race": null,
+      "attribute": null,
+      "monster_categories": [],
+      "spell_trap_type": "Normal",
+      "atk": null,
+      "def": null,
+      "level": null,
+      "rank": null,
+      "link_rating": null,
+      "archetype": "Cynet",
+      "mentions": [],
+      "image_url": null,
+      "ai_processing": {
+        "add_deck_to_hand": {
+          "version": "add-deck-to-hand-v1",
+          "processed_at": "2026-05-18T00:00:00Z",
+          "result_count": 1
+        }
+      },
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/cynet-mining-10014"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000005",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "6182",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Terraforming",
+      "normalized_name": "terraforming",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "Add 1 Field Spell from your Deck to your hand.",
+      "card_type": "Spell",
+      "frame_type": "Spell",
+      "race": null,
+      "attribute": null,
+      "monster_categories": [],
+      "spell_trap_type": "Normal",
+      "atk": null,
+      "def": null,
+      "level": null,
+      "rank": null,
+      "link_rating": null,
+      "archetype": null,
+      "mentions": [],
+      "image_url": null,
+      "ai_processing": {
+        "add_deck_to_hand": {
+          "version": "add-deck-to-hand-v1",
+          "processed_at": "2026-05-18T00:00:00Z",
+          "result_count": 1
+        }
+      },
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/terraforming-6182"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000006",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "4171",
+      "passcode": null,
+      "konami_id": null,
+      "name": "The Melody of Awakening Dragon",
+      "normalized_name": "the melody of awakening dragon",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "Discard 1 card; add up to 2 Dragon monsters with 3000 or more ATK and 2500 or less DEF from your Deck to your hand.",
+      "card_type": "Spell",
+      "frame_type": "Spell",
+      "race": null,
+      "attribute": null,
+      "monster_categories": [],
+      "spell_trap_type": "Normal",
+      "atk": null,
+      "def": null,
+      "level": null,
+      "rank": null,
+      "link_rating": null,
+      "archetype": null,
+      "mentions": [],
+      "image_url": null,
+      "ai_processing": {
+        "add_deck_to_hand": {
+          "version": "add-deck-to-hand-v1",
+          "processed_at": "2026-05-18T00:00:00Z",
+          "result_count": 1
+        }
+      },
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/the-melody-of-awakening-dragon-4171"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000007",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "2251",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Sangan",
+      "normalized_name": "sangan",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "If this card is sent from the field to the GY: Add 1 monster with 1500 or less ATK from your Deck to your hand, but you cannot activate cards, or the effects of cards, with that name for the rest of this turn. You can only use this effect of \"Sangan\" once per turn.",
+      "card_type": "Monster",
+      "frame_type": "Effect",
+      "race": "Fiend",
+      "attribute": "DARK",
+      "monster_categories": ["Effect"],
+      "spell_trap_type": null,
+      "atk": 1000,
+      "def": 600,
+      "level": 3,
+      "rank": null,
+      "link_rating": null,
+      "archetype": null,
+      "mentions": [],
+      "image_url": null,
+      "ai_processing": {
+        "add_deck_to_hand": {
+          "version": "add-deck-to-hand-v1",
+          "processed_at": "2026-05-18T00:00:00Z",
+          "result_count": 1
+        }
+      },
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/sangan-2251"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000008",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "6561",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Witch of the Black Forest",
+      "normalized_name": "witch of the black forest",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "If this card is sent from the field to the GY: Add 1 monster with 1500 or less DEF from your Deck to your hand, but you cannot activate cards, or the effects of cards, with that name for the rest of this turn. You can only use this effect of \"Witch of the Black Forest\" once per turn.",
+      "card_type": "Monster",
+      "frame_type": "Effect",
+      "race": "Spellcaster",
+      "attribute": "DARK",
+      "monster_categories": ["Effect"],
+      "spell_trap_type": null,
+      "atk": 1100,
+      "def": 1200,
+      "level": 4,
+      "rank": null,
+      "link_rating": null,
+      "archetype": null,
+      "mentions": [],
+      "image_url": null,
+      "ai_processing": {
+        "add_deck_to_hand": {
+          "version": "add-deck-to-hand-v1",
+          "processed_at": "2026-05-18T00:00:00Z",
+          "result_count": 1
+        }
+      },
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/witch-of-the-black-forest-6561"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000009",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "21",
+      "passcode": null,
+      "konami_id": null,
+      "name": "E - Emergency Call",
+      "normalized_name": "e emergency call",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "Add 1 \"Elemental HERO\" monster from your Deck to your hand.",
+      "card_type": "Spell",
+      "frame_type": "Spell",
+      "race": null,
+      "attribute": null,
+      "monster_categories": [],
+      "spell_trap_type": "Normal",
+      "atk": null,
+      "def": null,
+      "level": null,
+      "rank": null,
+      "link_rating": null,
+      "archetype": "Elemental HERO",
+      "mentions": [],
+      "image_url": null,
+      "ai_processing": {
+        "add_deck_to_hand": {
+          "version": "add-deck-to-hand-v1",
+          "processed_at": "2026-05-18T00:00:00Z",
+          "result_count": 1
+        }
+      },
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/e-emergency-call-21"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000010",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "4027",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Dark Magical Circle",
+      "normalized_name": "dark magical circle",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "When this card is activated: Look at the top 3 cards of your Deck, then you can reveal 1 \"Dark Magician\" or 1 Spell/Trap that specifically lists the card \"Dark Magician\" in its text, among them, and add it to your hand, also place the remaining cards on top of your Deck in any order. If \"Dark Magician\" is Normal or Special Summoned to your field (except during the Damage Step): You can target 1 card your opponent controls; banish it. You can only use each effect of \"Dark Magical Circle\" once per turn.",
+      "card_type": "Spell",
+      "frame_type": "Spell",
+      "race": null,
+      "attribute": null,
+      "monster_categories": [],
+      "spell_trap_type": "Continuous",
+      "atk": null,
+      "def": null,
+      "level": null,
+      "rank": null,
+      "link_rating": null,
+      "archetype": "Prophecy",
+      "mentions": ["Dark Magician"],
+      "image_url": null,
+      "ai_processing": {
+        "add_deck_to_hand": {
+          "version": "add-deck-to-hand-v1",
+          "processed_at": "2026-05-18T00:00:00Z",
+          "result_count": 1
+        }
+      },
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/dark-magical-circle-4027"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000011",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "harpie-harpist",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Harpie Harpist",
+      "normalized_name": "harpie harpist",
+      "aliases": [
+        {
+          "alias": "Harpie Lady",
+          "normalized_alias": "harpie lady",
+          "alias_kind": "exact_name",
+          "applies_in_zone_codes": ["field", "gy"],
+          "condition_json": {
+            "type": "always"
+          },
+          "source": "card_text"
+        }
+      ],
+      "normalized_aliases": ["harpie lady"],
+      "description": "This card's name becomes \"Harpie Lady\" while on the field or in the GY. You can only use each of these effects of \"Harpie Harpist\" once per turn. When this card is Normal Summoned: You can target 1 other Winged Beast monster you control and 1 face-up monster your opponent controls; return them to the hand. During the End Phase, if this card is in the GY because it was sent there this turn: You can add 1 Level 4 Winged Beast monster with 1500 or less ATK from your Deck to your hand.",
+      "card_type": "Monster",
+      "frame_type": "Effect",
+      "race": "Winged Beast",
+      "attribute": "WIND",
+      "monster_categories": ["Effect"],
+      "spell_trap_type": null,
+      "atk": 1700,
+      "def": 600,
+      "level": 4,
+      "rank": null,
+      "link_rating": null,
+      "archetype": "Harpie",
+      "mentions": ["Harpie Lady"],
+      "image_url": null,
+      "ai_processing": {
+        "add_deck_to_hand": {
+          "version": "add-deck-to-hand-v1",
+          "processed_at": "2026-05-18T00:00:00Z",
+          "result_count": 1
+        }
+      },
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/harpie-harpist"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000012",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "5588",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Archfiend Heiress",
+      "normalized_name": "archfiend heiress",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "If this card is sent to the GY by card effect, or by being destroyed by battle: You can add 1 \"Archfiend\" card from your Deck to your hand, except \"Archfiend Heiress\". You can only use this effect of \"Archfiend Heiress\" once per turn.",
+      "card_type": "Monster",
+      "frame_type": "Effect",
+      "race": "Fiend",
+      "attribute": "DARK",
+      "monster_categories": ["Effect"],
+      "spell_trap_type": null,
+      "atk": 1000,
+      "def": 0,
+      "level": 3,
+      "rank": null,
+      "link_rating": null,
+      "archetype": "Archfiend",
+      "mentions": ["Archfiend Heiress"],
+      "image_url": null,
+      "ai_processing": {
+        "add_deck_to_hand": {
+          "version": "add-deck-to-hand-v1",
+          "processed_at": "2026-05-18T00:00:00Z",
+          "result_count": 1
+        }
+      },
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/archfiend-heiress-5588"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000013",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "9338",
+      "passcode": null,
+      "konami_id": null,
+      "name": "The King of D.",
+      "normalized_name": "the king of d",
+      "aliases": [
+        {
+          "alias": "Lord of D.",
+          "normalized_alias": "lord of d",
+          "alias_kind": "exact_name",
+          "applies_in_zone_codes": ["field"],
+          "condition_json": {
+            "type": "always"
+          },
+          "source": "card_text"
+        }
+      ],
+      "normalized_aliases": ["lord of d"],
+      "description": "This card's name becomes \"Lord of D.\" while on the field. When this card is Normal Summoned: You can discard 1 Spell/Trap; add 1 \"The Flute of Summoning Dragon\", \"The Melody of Awakening Dragon\", or \"Dragon Revival Rhapsody\" from your Deck to your hand.",
+      "card_type": "Monster",
+      "frame_type": "Effect",
+      "race": "Spellcaster",
+      "attribute": "DARK",
+      "monster_categories": ["Effect"],
+      "spell_trap_type": null,
+      "atk": 1200,
+      "def": 1100,
+      "level": 4,
+      "rank": null,
+      "link_rating": null,
+      "archetype": null,
+      "mentions": ["The Flute of Summoning Dragon", "The Melody of Awakening Dragon", "Dragon Revival Rhapsody", "Lord of D."],
+      "image_url": null,
+      "ai_processing": {
+        "add_deck_to_hand": {
+          "version": "add-deck-to-hand-v1",
+          "processed_at": "2026-05-18T00:00:00Z",
+          "result_count": 1
+        }
+      },
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/the-king-of-d-9338"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000014",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "8048",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Preparation of Rites",
+      "normalized_name": "preparation of rites",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "Add 1 Level 7 or lower Ritual Monster from your Deck to your hand, then you can add 1 Ritual Spell from your GY to your hand.",
+      "card_type": "Spell",
+      "frame_type": "Spell",
+      "race": null,
+      "attribute": null,
+      "monster_categories": [],
+      "spell_trap_type": "Normal",
+      "atk": null,
+      "def": null,
+      "level": null,
+      "rank": null,
+      "link_rating": null,
+      "archetype": null,
+      "mentions": [],
+      "image_url": null,
+      "ai_processing": {
+        "add_deck_to_hand": {
+          "version": "add-deck-to-hand-v1",
+          "processed_at": "2026-05-18T00:00:00Z",
+          "result_count": 1
+        }
+      },
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/preparation-of-rites-8048"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000015",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "illusion-of-chaos",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Illusion of Chaos",
+      "normalized_name": "illusion of chaos",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "You can Ritual Summon this card with \"Chaos Form\". You can reveal this card in your hand; add 1 \"Dark Magician\", or 1 non-Ritual Monster that mentions it, from your Deck to your hand, then place 1 card from your hand on top of the Deck. When your opponent activates a monster effect (Quick Effect): You can return this card to the hand, and if you do, Special Summon 1 \"Dark Magician\" from your GY, and if you do that, negate that activated effect. You can only use each effect of \"Illusion of Chaos\" once per turn.",
+      "card_type": "Monster",
+      "frame_type": "Ritual Effect",
+      "race": "Spellcaster",
+      "attribute": "DARK",
+      "monster_categories": ["Ritual", "Effect"],
+      "spell_trap_type": null,
+      "atk": 2100,
+      "def": 2500,
+      "level": 7,
+      "rank": null,
+      "link_rating": null,
+      "archetype": "Chaos",
+      "mentions": ["Dark Magician"],
+      "image_url": null,
+      "ai_processing": {
+        "add_deck_to_hand": {
+          "version": "add-deck-to-hand-v1",
+          "processed_at": "2026-05-18T00:00:00Z",
+          "result_count": 1
+        }
+      },
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/illusion-of-chaos"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000016",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "8554",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Ash Blossom & Joyous Spring",
+      "normalized_name": "ash blossom joyous spring",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "When a card or effect is activated that includes any of these effects (Quick Effect): You can discard this card; negate that effect. Add a card from the Deck to the hand. Special Summon from the Deck. Send a card from the Deck to the GY. You can only use this effect of \"Ash Blossom & Joyous Spring\" once per turn.",
+      "card_type": "Monster",
+      "frame_type": "Tuner",
+      "race": "Zombie",
+      "attribute": "FIRE",
+      "monster_categories": ["Tuner", "Effect"],
+      "spell_trap_type": null,
+      "atk": 0,
+      "def": 1800,
+      "level": 3,
+      "rank": null,
+      "link_rating": null,
+      "archetype": null,
+      "mentions": [],
+      "image_url": null,
+      "ai_processing": {
+        "add_deck_to_hand": {
+          "version": "add-deck-to-hand-v1",
+          "processed_at": "2026-05-18T00:00:00Z",
+          "result_count": 0
+        }
+      },
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/ash-blossom-joyous-spring-8554"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000017",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "3400",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Elemental HERO Stratos",
+      "normalized_name": "elemental hero stratos",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "When this card is Normal or Special Summoned: You can activate 1 of these effects. Destroy Spells/Traps on the field, up to the number of \"HERO\" monsters you control, except this card. Add 1 \"HERO\" monster from your Deck to your hand.",
+      "card_type": "Monster",
+      "frame_type": "Effect",
+      "race": "Warrior",
+      "attribute": "WIND",
+      "monster_categories": ["Effect"],
+      "spell_trap_type": null,
+      "atk": 1800,
+      "def": 300,
+      "level": 4,
+      "rank": null,
+      "link_rating": null,
+      "archetype": "Elemental HERO",
+      "mentions": [],
+      "image_url": null,
+      "ai_processing": {},
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/elemental-hero-stratos-3400"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000018",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "dark-magician",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Dark Magician",
+      "normalized_name": "dark magician",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "The ultimate wizard in terms of attack and defense.",
+      "card_type": "Monster",
+      "frame_type": "Normal",
+      "race": "Spellcaster",
+      "attribute": "DARK",
+      "monster_categories": ["Normal"],
+      "spell_trap_type": null,
+      "atk": 2500,
+      "def": 2100,
+      "level": 7,
+      "rank": null,
+      "link_rating": null,
+      "archetype": "Dark Magician",
+      "mentions": [],
+      "image_url": null,
+      "ai_processing": {},
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/dark-magician"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000019",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "7485",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Blue-Eyes White Dragon",
+      "normalized_name": "blue eyes white dragon",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "This legendary dragon is a powerful engine of destruction.",
+      "card_type": "Monster",
+      "frame_type": "Normal",
+      "race": "Dragon",
+      "attribute": "LIGHT",
+      "monster_categories": ["Normal"],
+      "spell_trap_type": null,
+      "atk": 3000,
+      "def": 2500,
+      "level": 8,
+      "rank": null,
+      "link_rating": null,
+      "archetype": "Blue-Eyes",
+      "mentions": [],
+      "image_url": null,
+      "ai_processing": {},
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/blue-eyes-white-dragon-7485"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000020",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "3263",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Blue-Eyes Alternative White Dragon",
+      "normalized_name": "blue eyes alternative white dragon",
+      "aliases": [
+        {
+          "alias": "Blue-Eyes White Dragon",
+          "normalized_alias": "blue eyes white dragon",
+          "alias_kind": "exact_name",
+          "applies_in_zone_codes": ["field", "gy"],
+          "condition_json": {
+            "type": "always"
+          },
+          "source": "card_text"
+        }
+      ],
+      "normalized_aliases": ["blue eyes white dragon"],
+      "description": "Cannot be Normal Summoned/Set. Must first be Special Summoned (from your hand) by revealing \"Blue-Eyes White Dragon\" in your hand. You can only Special Summon \"Blue-Eyes Alternative White Dragon\" once per turn this way. This card's name becomes \"Blue-Eyes White Dragon\" while it is on the field or in the Graveyard. Once per turn: You can target 1 monster your opponent controls; destroy it. This card cannot attack the turn this effect is activated.",
+      "card_type": "Monster",
+      "frame_type": "Effect",
+      "race": "Dragon",
+      "attribute": "LIGHT",
+      "monster_categories": ["Effect"],
+      "spell_trap_type": null,
+      "atk": 3000,
+      "def": 2500,
+      "level": 8,
+      "rank": null,
+      "link_rating": null,
+      "archetype": "Blue-Eyes",
+      "mentions": ["Blue-Eyes White Dragon"],
+      "image_url": null,
+      "ai_processing": {},
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/blue-eyes-alternative-white-dragon-3263"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000021",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "8466",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Cyberse Gadget",
+      "normalized_name": "cyberse gadget",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "When this card is Normal Summoned: You can target 1 Level 2 or lower monster in your GY; Special Summon it in Defense Position, but its effects are negated. If this card is sent from the field to the GY: You can Special Summon 1 \"Gadget Token\" (Cyberse/LIGHT/Level 2/ATK 0/DEF 0). You can only use this effect of \"Cyberse Gadget\" once per turn.",
+      "card_type": "Monster",
+      "frame_type": "Effect",
+      "race": "Cyberse",
+      "attribute": "LIGHT",
+      "monster_categories": ["Effect"],
+      "spell_trap_type": null,
+      "atk": 1400,
+      "def": 300,
+      "level": 4,
+      "rank": null,
+      "link_rating": null,
+      "archetype": "Gadget",
+      "mentions": [],
+      "image_url": null,
+      "ai_processing": {},
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/cyberse-gadget-8466"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000022",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "8511",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Souleating Oviraptor",
+      "normalized_name": "souleating oviraptor",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "If this card is Normal or Special Summoned: You can take 1 Dinosaur monster from your Deck, and either add it to your hand or send it to the GY. You can target 1 other Level 4 or lower Dinosaur monster on the field; destroy it, then Special Summon 1 Dinosaur monster from your GY in Defense Position. You can only use each effect of \"Souleating Oviraptor\" once per turn.",
+      "card_type": "Monster",
+      "frame_type": "Effect",
+      "race": "Dinosaur",
+      "attribute": "DARK",
+      "monster_categories": ["Effect"],
+      "spell_trap_type": null,
+      "atk": 1800,
+      "def": 500,
+      "level": 4,
+      "rank": null,
+      "link_rating": null,
+      "archetype": null,
+      "mentions": [],
+      "image_url": null,
+      "ai_processing": {},
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/souleating-oviraptor-8511"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000023",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "zombie-world",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Zombie World",
+      "normalized_name": "zombie world",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "All monsters on the field and in the GYs become Zombie monsters. Neither player can Tribute Summon monsters, except Zombie monsters.",
+      "card_type": "Spell",
+      "frame_type": "Spell",
+      "race": null,
+      "attribute": null,
+      "monster_categories": [],
+      "spell_trap_type": "Field",
+      "atk": null,
+      "def": null,
+      "level": null,
+      "rank": null,
+      "link_rating": null,
+      "archetype": null,
+      "mentions": [],
+      "image_url": null,
+      "ai_processing": {},
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/zombie-world"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000024",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "3017",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Lunalight Kaleido Chick",
+      "normalized_name": "lunalight kaleido chick",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "Once per turn: You can send 1 \"Lunalight\" monster from your Deck or Extra Deck to the GY; the name of this face-up card on the field can be treated as the sent monster's, if used as Fusion Material this turn. If this card is sent to the GY by a card effect: You can target 1 \"Polymerization\" in your GY; add it to your hand. You can only use this effect of \"Lunalight Kaleido Chick\" once per turn. If this card is banished: You can activate this effect; this turn, your opponent's cards and effects cannot be activated during the Battle Phase.",
+      "card_type": "Monster",
+      "frame_type": "Effect",
+      "race": "Beast-Warrior",
+      "attribute": "DARK",
+      "monster_categories": ["Effect"],
+      "spell_trap_type": null,
+      "atk": 1400,
+      "def": 800,
+      "level": 4,
+      "rank": null,
+      "link_rating": null,
+      "archetype": "Lunalight",
+      "mentions": ["Polymerization"],
+      "image_url": null,
+      "ai_processing": {},
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/lunalight-kaleido-chick-3017"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000025",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "6499",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Cyber Angel Benten",
+      "normalized_name": "cyber angel benten",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "You can Ritual Summon this card with \"Machine Angel Ritual\". If this card destroys a monster by battle and sends it to the GY: Inflict damage to your opponent equal to that monster's original DEF in the GY. If this card is Tributed: You can add 1 LIGHT Fairy monster from your Deck to your hand.",
+      "card_type": "Monster",
+      "frame_type": "Ritual Effect",
+      "race": "Fairy",
+      "attribute": "LIGHT",
+      "monster_categories": ["Ritual", "Effect"],
+      "spell_trap_type": null,
+      "atk": 1800,
+      "def": 1500,
+      "level": 6,
+      "rank": null,
+      "link_rating": null,
+      "archetype": "Cyber Angel",
+      "mentions": ["Machine Angel Ritual"],
+      "image_url": null,
+      "ai_processing": {},
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/cyber-angel-benten-6499"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000026",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "eternal-soul",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Eternal Soul",
+      "normalized_name": "eternal soul",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "Every \"Dark Magician\" in your Monster Zone is unaffected by your opponent's card effects. If this face-up card leaves the field: Destroy all monsters you control. You can only use the following effect of \"Eternal Soul\" once per turn. You can activate 1 of these effects; Special Summon 1 \"Dark Magician\" from your hand or GY. Add 1 \"Dark Magic Attack\" or \"Thousand Knives\" from your Deck to your hand.",
+      "card_type": "Trap",
+      "frame_type": "Trap",
+      "race": null,
+      "attribute": null,
+      "monster_categories": [],
+      "spell_trap_type": "Continuous",
+      "atk": null,
+      "def": null,
+      "level": null,
+      "rank": null,
+      "link_rating": null,
+      "archetype": null,
+      "mentions": ["Dark Magician", "Dark Magic Attack", "Thousand Knives"],
+      "image_url": null,
+      "ai_processing": {},
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/eternal-soul"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000027",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "7665",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Harpie Lady 1",
+      "normalized_name": "harpie lady 1",
+      "aliases": [
+        {
+          "alias": "Harpie Lady",
+          "normalized_alias": "harpie lady",
+          "alias_kind": "exact_name",
+          "applies_in_zone_codes": [],
+          "condition_json": {
+            "type": "always"
+          },
+          "source": "card_text"
+        }
+      ],
+      "normalized_aliases": ["harpie lady"],
+      "description": "(This card's name is always treated as \"Harpie Lady\".) All WIND monsters gain 300 ATK.",
+      "card_type": "Monster",
+      "frame_type": "Effect",
+      "race": "Winged Beast",
+      "attribute": "WIND",
+      "monster_categories": ["Effect"],
+      "spell_trap_type": null,
+      "atk": 1300,
+      "def": 1400,
+      "level": 4,
+      "rank": null,
+      "link_rating": null,
+      "archetype": "Harpie",
+      "mentions": ["Harpie Lady"],
+      "image_url": null,
+      "ai_processing": {},
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/harpie-lady-1-7665"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000028",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "summoned-skull",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Summoned Skull",
+      "normalized_name": "summoned skull",
+      "aliases": [
+        {
+          "alias": "Archfiend",
+          "normalized_alias": "archfiend",
+          "alias_kind": "archetype_membership",
+          "applies_in_zone_codes": [],
+          "condition_json": {
+            "type": "always"
+          },
+          "source": "card_text"
+        }
+      ],
+      "normalized_aliases": ["archfiend"],
+      "description": "A fiend with dark powers for confusing the enemy. Among the Fiend monsters, this monster boasts considerable force. This card is always treated as an \"Archfiend\" card.",
+      "card_type": "Monster",
+      "frame_type": "Normal",
+      "race": "Fiend",
+      "attribute": "DARK",
+      "monster_categories": ["Normal"],
+      "spell_trap_type": null,
+      "atk": 2500,
+      "def": 1200,
+      "level": 6,
+      "rank": null,
+      "link_rating": null,
+      "archetype": null,
+      "mentions": [],
+      "image_url": null,
+      "ai_processing": {},
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/summoned-skull"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000029",
+      "upstream_source": "ygoprodeck",
+      "upstream_id": "3881",
+      "passcode": null,
+      "konami_id": null,
+      "name": "Birdface",
+      "normalized_name": "birdface",
+      "aliases": [],
+      "normalized_aliases": [],
+      "description": "When this card is destroyed by battle and sent to the GY: You can add 1 \"Harpie Lady\" from your Deck to your hand.",
+      "card_type": "Monster",
+      "frame_type": "Effect",
+      "race": "Winged Beast",
+      "attribute": "WIND",
+      "monster_categories": ["Effect"],
+      "spell_trap_type": null,
+      "atk": 1600,
+      "def": 1600,
+      "level": 4,
+      "rank": null,
+      "link_rating": null,
+      "archetype": "Harpie",
+      "mentions": ["Harpie Lady"],
+      "image_url": null,
+      "ai_processing": {
+        "add_deck_to_hand": {
+          "version": "add-deck-to-hand-v1",
+          "processed_at": "2026-05-18T00:00:00Z",
+          "result_count": 1
+        }
+      },
+      "raw_payload": {
+        "source_url": "https://ygoprodeck.com/card/birdface-3881"
+      },
+      "imported_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    }
+  ]
+}

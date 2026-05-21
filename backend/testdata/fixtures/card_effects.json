@@ -1,0 +1,604 @@
+{
+  "metadata": {
+    "fixture_name": "minimal_add_deck_to_hand_effects",
+    "effect_code": "add_deck_to_hand",
+    "extraction_version": "add-deck-to-hand-v1",
+    "created_for": "MVP selector matching tests and local seed data",
+    "created_at": "2026-05-18T00:00:00Z",
+    "note": "selector_hash is intentionally omitted. Seed/import code should compute it from canonical selector_json."
+  },
+  "card_effects": [
+    {
+      "id": "00000000-0000-4000-9000-000000000001",
+      "source_card_id": "00000000-0000-4000-8000-000000000001",
+      "source_card_name": "Reinforcement of the Army",
+      "effect_code": "add_deck_to_hand",
+      "extraction_version": "add-deck-to-hand-v1",
+      "source_text": "Add 1 Level 4 or lower Warrior monster from your Deck to your hand.",
+      "condition_text": null,
+      "cost_text": null,
+      "action_text": "Add 1 Level 4 or lower Warrior monster from your Deck to your hand.",
+      "restriction_text": null,
+      "selector_status": "resolved",
+      "selector_json": {
+        "type": "logical",
+        "op": "and",
+        "args": [
+          {
+            "type": "comparison",
+            "field": "card_type",
+            "op": "=",
+            "value": "Monster"
+          },
+          {
+            "type": "comparison",
+            "field": "race",
+            "op": "=",
+            "value": "Warrior"
+          },
+          {
+            "type": "comparison",
+            "field": "level",
+            "op": "<=",
+            "value": 4
+          }
+        ]
+      },
+      "ai_confidence": 0.98,
+      "is_active": true,
+      "created_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-9000-000000000002",
+      "source_card_id": "00000000-0000-4000-8000-000000000002",
+      "source_card_name": "Fossil Dig",
+      "effect_code": "add_deck_to_hand",
+      "extraction_version": "add-deck-to-hand-v1",
+      "source_text": "Add 1 Level 6 or lower Dinosaur monster from your Deck to your hand.",
+      "condition_text": null,
+      "cost_text": null,
+      "action_text": "Add 1 Level 6 or lower Dinosaur monster from your Deck to your hand.",
+      "restriction_text": null,
+      "selector_status": "resolved",
+      "selector_json": {
+        "type": "logical",
+        "op": "and",
+        "args": [
+          {
+            "type": "comparison",
+            "field": "card_type",
+            "op": "=",
+            "value": "Monster"
+          },
+          {
+            "type": "comparison",
+            "field": "race",
+            "op": "=",
+            "value": "Dinosaur"
+          },
+          {
+            "type": "comparison",
+            "field": "level",
+            "op": "<=",
+            "value": 6
+          }
+        ]
+      },
+      "ai_confidence": 0.98,
+      "is_active": true,
+      "created_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-9000-000000000003",
+      "source_card_id": "00000000-0000-4000-8000-000000000003",
+      "source_card_name": "Fire Formation - Tenki",
+      "effect_code": "add_deck_to_hand",
+      "extraction_version": "add-deck-to-hand-v1",
+      "source_text": "When this card is activated: You can add 1 Level 4 or lower Beast-Warrior monster from your Deck to your hand.",
+      "condition_text": "When this card is activated",
+      "cost_text": null,
+      "action_text": "You can add 1 Level 4 or lower Beast-Warrior monster from your Deck to your hand.",
+      "restriction_text": null,
+      "selector_status": "resolved",
+      "selector_json": {
+        "type": "logical",
+        "op": "and",
+        "args": [
+          {
+            "type": "comparison",
+            "field": "card_type",
+            "op": "=",
+            "value": "Monster"
+          },
+          {
+            "type": "comparison",
+            "field": "race",
+            "op": "=",
+            "value": "Beast-Warrior"
+          },
+          {
+            "type": "comparison",
+            "field": "level",
+            "op": "<=",
+            "value": 4
+          }
+        ]
+      },
+      "ai_confidence": 0.97,
+      "is_active": true,
+      "created_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-9000-000000000004",
+      "source_card_id": "00000000-0000-4000-8000-000000000004",
+      "source_card_name": "Cynet Mining",
+      "effect_code": "add_deck_to_hand",
+      "extraction_version": "add-deck-to-hand-v1",
+      "source_text": "Send 1 card from your hand to the GY; add 1 Level 4 or lower Cyberse monster from your Deck to your hand.",
+      "condition_text": null,
+      "cost_text": "Send 1 card from your hand to the GY",
+      "action_text": "Add 1 Level 4 or lower Cyberse monster from your Deck to your hand.",
+      "restriction_text": null,
+      "selector_status": "resolved",
+      "selector_json": {
+        "type": "logical",
+        "op": "and",
+        "args": [
+          {
+            "type": "comparison",
+            "field": "card_type",
+            "op": "=",
+            "value": "Monster"
+          },
+          {
+            "type": "comparison",
+            "field": "race",
+            "op": "=",
+            "value": "Cyberse"
+          },
+          {
+            "type": "comparison",
+            "field": "level",
+            "op": "<=",
+            "value": 4
+          }
+        ]
+      },
+      "ai_confidence": 0.96,
+      "is_active": true,
+      "created_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-9000-000000000005",
+      "source_card_id": "00000000-0000-4000-8000-000000000005",
+      "source_card_name": "Terraforming",
+      "effect_code": "add_deck_to_hand",
+      "extraction_version": "add-deck-to-hand-v1",
+      "source_text": "Add 1 Field Spell from your Deck to your hand.",
+      "condition_text": null,
+      "cost_text": null,
+      "action_text": "Add 1 Field Spell from your Deck to your hand.",
+      "restriction_text": null,
+      "selector_status": "resolved",
+      "selector_json": {
+        "type": "logical",
+        "op": "and",
+        "args": [
+          {
+            "type": "comparison",
+            "field": "card_type",
+            "op": "=",
+            "value": "Spell"
+          },
+          {
+            "type": "comparison",
+            "field": "spell_trap_type",
+            "op": "=",
+            "value": "Field"
+          }
+        ]
+      },
+      "ai_confidence": 0.98,
+      "is_active": true,
+      "created_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-9000-000000000006",
+      "source_card_id": "00000000-0000-4000-8000-000000000006",
+      "source_card_name": "The Melody of Awakening Dragon",
+      "effect_code": "add_deck_to_hand",
+      "extraction_version": "add-deck-to-hand-v1",
+      "source_text": "Discard 1 card; add up to 2 Dragon monsters with 3000 or more ATK and 2500 or less DEF from your Deck to your hand.",
+      "condition_text": null,
+      "cost_text": "Discard 1 card",
+      "action_text": "Add up to 2 Dragon monsters with 3000 or more ATK and 2500 or less DEF from your Deck to your hand.",
+      "restriction_text": null,
+      "selector_status": "resolved",
+      "selector_json": {
+        "type": "logical",
+        "op": "and",
+        "args": [
+          {
+            "type": "comparison",
+            "field": "card_type",
+            "op": "=",
+            "value": "Monster"
+          },
+          {
+            "type": "comparison",
+            "field": "race",
+            "op": "=",
+            "value": "Dragon"
+          },
+          {
+            "type": "comparison",
+            "field": "atk",
+            "op": ">=",
+            "value": 3000
+          },
+          {
+            "type": "comparison",
+            "field": "def",
+            "op": "<=",
+            "value": 2500
+          }
+        ]
+      },
+      "ai_confidence": 0.97,
+      "is_active": true,
+      "created_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-9000-000000000007",
+      "source_card_id": "00000000-0000-4000-8000-000000000007",
+      "source_card_name": "Sangan",
+      "effect_code": "add_deck_to_hand",
+      "extraction_version": "add-deck-to-hand-v1",
+      "source_text": "If this card is sent from the field to the GY: Add 1 monster with 1500 or less ATK from your Deck to your hand, but you cannot activate cards, or the effects of cards, with that name for the rest of this turn.",
+      "condition_text": "If this card is sent from the field to the GY",
+      "cost_text": null,
+      "action_text": "Add 1 monster with 1500 or less ATK from your Deck to your hand.",
+      "restriction_text": "but you cannot activate cards, or the effects of cards, with that name for the rest of this turn.",
+      "selector_status": "resolved",
+      "selector_json": {
+        "type": "logical",
+        "op": "and",
+        "args": [
+          {
+            "type": "comparison",
+            "field": "card_type",
+            "op": "=",
+            "value": "Monster"
+          },
+          {
+            "type": "comparison",
+            "field": "atk",
+            "op": "<=",
+            "value": 1500
+          }
+        ]
+      },
+      "ai_confidence": 0.95,
+      "is_active": true,
+      "created_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-9000-000000000008",
+      "source_card_id": "00000000-0000-4000-8000-000000000008",
+      "source_card_name": "Witch of the Black Forest",
+      "effect_code": "add_deck_to_hand",
+      "extraction_version": "add-deck-to-hand-v1",
+      "source_text": "If this card is sent from the field to the GY: Add 1 monster with 1500 or less DEF from your Deck to your hand, but you cannot activate cards, or the effects of cards, with that name for the rest of this turn.",
+      "condition_text": "If this card is sent from the field to the GY",
+      "cost_text": null,
+      "action_text": "Add 1 monster with 1500 or less DEF from your Deck to your hand.",
+      "restriction_text": "but you cannot activate cards, or the effects of cards, with that name for the rest of this turn.",
+      "selector_status": "resolved",
+      "selector_json": {
+        "type": "logical",
+        "op": "and",
+        "args": [
+          {
+            "type": "comparison",
+            "field": "card_type",
+            "op": "=",
+            "value": "Monster"
+          },
+          {
+            "type": "comparison",
+            "field": "def",
+            "op": "<=",
+            "value": 1500
+          }
+        ]
+      },
+      "ai_confidence": 0.95,
+      "is_active": true,
+      "created_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-9000-000000000009",
+      "source_card_id": "00000000-0000-4000-8000-000000000009",
+      "source_card_name": "E - Emergency Call",
+      "effect_code": "add_deck_to_hand",
+      "extraction_version": "add-deck-to-hand-v1",
+      "source_text": "Add 1 \"Elemental HERO\" monster from your Deck to your hand.",
+      "condition_text": null,
+      "cost_text": null,
+      "action_text": "Add 1 \"Elemental HERO\" monster from your Deck to your hand.",
+      "restriction_text": null,
+      "selector_status": "resolved",
+      "selector_json": {
+        "type": "logical",
+        "op": "and",
+        "args": [
+          {
+            "type": "comparison",
+            "field": "card_type",
+            "op": "=",
+            "value": "Monster"
+          },
+          {
+            "type": "comparison",
+            "field": "archetype",
+            "op": "=",
+            "value": "Elemental HERO"
+          }
+        ]
+      },
+      "ai_confidence": 0.97,
+      "is_active": true,
+      "created_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-9000-000000000010",
+      "source_card_id": "00000000-0000-4000-8000-000000000010",
+      "source_card_name": "Dark Magical Circle",
+      "effect_code": "add_deck_to_hand",
+      "extraction_version": "add-deck-to-hand-v1",
+      "source_text": "When this card is activated: Look at the top 3 cards of your Deck, then you can reveal 1 \"Dark Magician\" or 1 Spell/Trap that specifically lists the card \"Dark Magician\" in its text, among them, and add it to your hand, also place the remaining cards on top of your Deck in any order.",
+      "condition_text": "When this card is activated",
+      "cost_text": null,
+      "action_text": "Look at the top 3 cards of your Deck, then you can reveal 1 \"Dark Magician\" or 1 Spell/Trap that specifically lists the card \"Dark Magician\" in its text, among them, and add it to your hand, also place the remaining cards on top of your Deck in any order.",
+      "restriction_text": null,
+      "selector_status": "resolved",
+      "selector_json": {
+        "type": "logical",
+        "op": "or",
+        "args": [
+          {
+            "type": "comparison",
+            "field": "name",
+            "op": "=",
+            "value": "Dark Magician"
+          },
+          {
+            "type": "logical",
+            "op": "and",
+            "args": [
+              {
+                "type": "comparison",
+                "field": "card_type",
+                "op": "in",
+                "value": [
+                  "Spell",
+                  "Trap"
+                ]
+              },
+              {
+                "type": "comparison",
+                "field": "mentions",
+                "op": "contains",
+                "value": "Dark Magician"
+              }
+            ]
+          }
+        ]
+      },
+      "ai_confidence": 0.9,
+      "is_active": true,
+      "created_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-9000-000000000011",
+      "source_card_id": "00000000-0000-4000-8000-000000000011",
+      "source_card_name": "Harpie Harpist",
+      "effect_code": "add_deck_to_hand",
+      "extraction_version": "add-deck-to-hand-v1",
+      "source_text": "During the End Phase, if this card is in the GY because it was sent there this turn: You can add 1 Level 4 Winged Beast monster with 1500 or less ATK from your Deck to your hand.",
+      "condition_text": "During the End Phase, if this card is in the GY because it was sent there this turn",
+      "cost_text": null,
+      "action_text": "You can add 1 Level 4 Winged Beast monster with 1500 or less ATK from your Deck to your hand.",
+      "restriction_text": null,
+      "selector_status": "resolved",
+      "selector_json": {
+        "type": "logical",
+        "op": "and",
+        "args": [
+          {
+            "type": "comparison",
+            "field": "card_type",
+            "op": "=",
+            "value": "Monster"
+          },
+          {
+            "type": "comparison",
+            "field": "race",
+            "op": "=",
+            "value": "Winged Beast"
+          },
+          {
+            "type": "comparison",
+            "field": "level",
+            "op": "=",
+            "value": 4
+          },
+          {
+            "type": "comparison",
+            "field": "atk",
+            "op": "<=",
+            "value": 1500
+          }
+        ]
+      },
+      "ai_confidence": 0.92,
+      "is_active": true,
+      "created_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-9000-000000000012",
+      "source_card_id": "00000000-0000-4000-8000-000000000012",
+      "source_card_name": "Archfiend Heiress",
+      "effect_code": "add_deck_to_hand",
+      "extraction_version": "add-deck-to-hand-v1",
+      "source_text": "If this card is sent to the GY by card effect, or by being destroyed by battle: You can add 1 \"Archfiend\" card from your Deck to your hand, except \"Archfiend Heiress\".",
+      "condition_text": "If this card is sent to the GY by card effect, or by being destroyed by battle",
+      "cost_text": null,
+      "action_text": "You can add 1 \"Archfiend\" card from your Deck to your hand, except \"Archfiend Heiress\".",
+      "restriction_text": null,
+      "selector_status": "resolved",
+      "selector_json": {
+        "type": "logical",
+        "op": "and",
+        "args": [
+          {
+            "type": "comparison",
+            "field": "archetype",
+            "op": "=",
+            "value": "Archfiend"
+          },
+          {
+            "type": "comparison",
+            "field": "name",
+            "op": "!=",
+            "value": "Archfiend Heiress"
+          }
+        ]
+      },
+      "ai_confidence": 0.93,
+      "is_active": true,
+      "created_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-9000-000000000013",
+      "source_card_id": "00000000-0000-4000-8000-000000000013",
+      "source_card_name": "The King of D.",
+      "effect_code": "add_deck_to_hand",
+      "extraction_version": "add-deck-to-hand-v1",
+      "source_text": "When this card is Normal Summoned: You can discard 1 Spell/Trap; add 1 \"The Flute of Summoning Dragon\", \"The Melody of Awakening Dragon\", or \"Dragon Revival Rhapsody\" from your Deck to your hand.",
+      "condition_text": "When this card is Normal Summoned",
+      "cost_text": "You can discard 1 Spell/Trap",
+      "action_text": "Add 1 \"The Flute of Summoning Dragon\", \"The Melody of Awakening Dragon\", or \"Dragon Revival Rhapsody\" from your Deck to your hand.",
+      "restriction_text": null,
+      "selector_status": "resolved",
+      "selector_json": {
+        "type": "comparison",
+        "field": "name",
+        "op": "in",
+        "value": [
+          "The Flute of Summoning Dragon",
+          "The Melody of Awakening Dragon",
+          "Dragon Revival Rhapsody"
+        ]
+      },
+      "ai_confidence": 0.96,
+      "is_active": true,
+      "created_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-9000-000000000014",
+      "source_card_id": "00000000-0000-4000-8000-000000000014",
+      "source_card_name": "Preparation of Rites",
+      "effect_code": "add_deck_to_hand",
+      "extraction_version": "add-deck-to-hand-v1",
+      "source_text": "Add 1 Level 7 or lower Ritual Monster from your Deck to your hand, then you can add 1 Ritual Spell from your GY to your hand.",
+      "condition_text": null,
+      "cost_text": null,
+      "action_text": "Add 1 Level 7 or lower Ritual Monster from your Deck to your hand.",
+      "restriction_text": null,
+      "selector_status": "unresolved",
+      "selector_json": null,
+      "ai_confidence": 0.72,
+      "is_active": true,
+      "created_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-9000-000000000015",
+      "source_card_id": "00000000-0000-4000-8000-000000000015",
+      "source_card_name": "Illusion of Chaos",
+      "effect_code": "add_deck_to_hand",
+      "extraction_version": "add-deck-to-hand-v1",
+      "source_text": "You can reveal this card in your hand; add 1 \"Dark Magician\", or 1 non-Ritual Monster that mentions it, from your Deck to your hand, then place 1 card from your hand on top of the Deck.",
+      "condition_text": null,
+      "cost_text": "You can reveal this card in your hand",
+      "action_text": "Add 1 \"Dark Magician\", or 1 non-Ritual Monster that mentions it, from your Deck to your hand, then place 1 card from your hand on top of the Deck.",
+      "restriction_text": null,
+      "selector_status": "unresolved",
+      "selector_json": null,
+      "ai_confidence": 0.7,
+      "is_active": true,
+      "created_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-9000-000000000016",
+      "source_card_id": "00000000-0000-4000-8000-000000000001",
+      "source_card_name": "Reinforcement of the Army",
+      "effect_code": "add_deck_to_hand",
+      "extraction_version": "add-deck-to-hand-v1",
+      "source_text": "Add 1 Level 4 or lower Warrior monster from your Deck to your hand.",
+      "condition_text": null,
+      "cost_text": null,
+      "action_text": "Add 1 Level 4 or lower Warrior monster from your Deck to your hand.",
+      "restriction_text": null,
+      "selector_status": "resolved",
+      "selector_json": {
+        "type": "comparison",
+        "field": "card_type",
+        "op": "=",
+        "value": "Monster"
+      },
+      "ai_confidence": 0.1,
+      "is_active": false,
+      "created_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-9000-000000000017",
+      "source_card_id": "00000000-0000-4000-8000-000000000029",
+      "source_card_name": "Birdface",
+      "effect_code": "add_deck_to_hand",
+      "extraction_version": "add-deck-to-hand-v1",
+      "source_text": "When this card is destroyed by battle and sent to the GY: You can add 1 \"Harpie Lady\" from your Deck to your hand.",
+      "condition_text": "When this card is destroyed by battle and sent to the GY",
+      "cost_text": null,
+      "action_text": "You can add 1 \"Harpie Lady\" from your Deck to your hand.",
+      "restriction_text": null,
+      "selector_status": "resolved",
+      "selector_json": {
+        "type": "comparison",
+        "field": "name",
+        "op": "=",
+        "value": "Harpie Lady"
+      },
+      "ai_confidence": 0.96,
+      "is_active": true,
+      "created_at": "2026-05-18T00:00:00Z",
+      "updated_at": "2026-05-18T00:00:00Z"
+    }
+  ]
+}

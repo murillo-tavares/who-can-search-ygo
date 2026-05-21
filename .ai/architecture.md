@@ -31,6 +31,8 @@ Local infrastructure:
 
 - Docker Compose.
 - PostgreSQL service from the beginning.
+- Backend service in Docker Compose for local full-stack runs.
+- Environment variables loaded from `.env` files.
 
 ## Repository Shape
 
@@ -49,6 +51,7 @@ backend/
   cmd/
     api/
     migrate/
+    seed-fixtures/
   internal/
     app/
     config/
@@ -92,6 +95,8 @@ Do not put business rules directly in handlers.
 Public endpoints:
 
 - `GET /healthz`
+- `GET /docs`
+- `GET /openapi.json`
 - `GET /cards?query=...`
 - `GET /cards/{id}`
 - `GET /cards/{id}/searchers`
@@ -109,9 +114,27 @@ Response standards:
 
 Use CLI commands for MVP operational work:
 
-- `backend/cmd/migrate`, if not using `goose` directly
+- Database migrations run through `backend/cmd/migrate`.
+- Local fixture synchronization runs through `backend/cmd/seed-fixtures`.
+- The API assumes the target database already exists.
+- The API must not create, start, stop, or otherwise manage the database server.
 
-The application works with the card and extraction data currently available in the database.
+The application works with the card and extraction data currently available in the database. For local development, Docker Compose runs migrations and fixture synchronization as separate one-shot services before the API starts. This keeps the local API path database-backed while reusing the same fixtures used by tests.
+
+## Configuration
+
+The backend reads configuration from process environment variables and local `.env` files.
+
+Supported local files:
+
+- `.env.local`
+- `.env`
+- `../.env.local`
+- `../.env`
+
+Committed examples live in `.env.example`. Real `.env` files are ignored by git.
+
+The API requires `DATABASE_URL` and should use PostgreSQL in local development.
 
 The schema includes:
 
@@ -139,7 +162,7 @@ Target search flow:
 1. Load the selected target card by ID.
 2. Load active extracted effects with `selector_status = resolved` for `add_deck_to_hand`.
 3. Evaluate each effect selector against the target card using deterministic rule code.
-4. Return source cards whose selectors match, including the matched `card_effects.effect_text`.
+4. Return source cards whose selectors match, including the matched `card_effects.source_text` and `card_effects.action_text`.
 
 This is acceptable for the MVP because only stored active selectors are evaluated, not all card text.
 

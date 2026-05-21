@@ -36,6 +36,9 @@ When changing behavior:
 - Use table-driven tests for selector matching.
 - Use `sqlc` query files as the source for generated database code.
 - Use migrations as the source of truth for schema.
+- Run pending migrations through the dedicated migration command or Docker Compose service.
+- For local development, sync fixtures into PostgreSQL through the dedicated fixture seed command or Docker Compose service.
+- Keep runtime configuration in environment variables and `.env` files, not inline Makefile assignments.
 - Prefer standard library packages unless a dependency clearly reduces complexity.
 - Do not introduce a heavy ORM.
 

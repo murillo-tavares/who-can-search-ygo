@@ -187,3 +187,78 @@ Rationale:
 - Human-readable.
 - Tied to the effect code being extracted.
 - Simple to increment when extraction logic changes.
+
+## ADR-011: Run Database Migrations As A Separate Process
+
+Status: accepted
+
+Decision:
+
+Database migrations run through the dedicated `backend/cmd/migrate` command. Docker Compose runs this command as a one-shot service before the API starts. The API does not apply migrations during startup.
+
+Rationale:
+
+- Preserves a versioned migration history through `goose`.
+- Keeps API startup focused on serving traffic.
+
+Consequences:
+
+- The API may fail at runtime if it starts against an unmigrated database.
+- Local Compose startup fails before the API starts if migrations fail.
+- A PostgreSQL advisory lock protects concurrent startup attempts from running migrations at the same time.
+
+## ADR-012: Serve OpenAPI Documentation From The API
+
+Status: accepted
+
+Decision:
+
+Expose the OpenAPI document at `GET /openapi.json` and render interactive API documentation at `GET /docs` with Scalar.
+
+Rationale:
+
+- Keeps endpoint documentation close to the backend implementation.
+- Gives humans an interactive way to inspect and try public endpoints.
+- Avoids adding a separate documentation service for the MVP.
+
+## ADR-013: Use Environment Files For Local Configuration
+
+Status: accepted
+
+Decision:
+
+Keep runtime configuration in environment variables and `.env` files.
+
+The backend loads local `.env` files during startup. The backend Makefile does not set runtime environment variables inline.
+
+Docker Compose can run both PostgreSQL and the backend, using `.env` values with safe local defaults where possible.
+
+Rationale:
+
+- Keeps local configuration easy to change without editing Make targets.
+- Makes Docker and non-Docker runs use the same configuration names.
+
+Consequences:
+
+- Developers should create a local `.env` from `.env.example` when using `make run`.
+- Docker Compose uses an internal `DATABASE_URL` pointing at the `postgres` service.
+
+## ADR-014: Sync Local Fixtures Into PostgreSQL
+
+Status: accepted
+
+Decision:
+
+For local development, synchronize fixture JSON data into PostgreSQL through the dedicated `backend/cmd/seed-fixtures` command.
+
+Docker Compose runs fixture synchronization as a one-shot service after migrations and before the API starts. Sync operations are idempotent and reuse the same fixture files used by backend tests.
+
+Rationale:
+
+- Keeps local API behavior database-backed.
+- Makes local testing closer to production query behavior.
+- Avoids maintaining separate local fixture data and database seed data.
+
+Consequences:
+
+- Fixture JSON changes affect both local seed data and fixture-backed tests.
