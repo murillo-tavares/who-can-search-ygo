@@ -9,10 +9,11 @@ Before making changes, read:
 1. `.ai/product.md`
 2. `.ai/architecture.md`
 3. `.ai/data-and-rules.md`
-4. `.ai/schema.md`
-5. `.ai/engineering-rules.md`
-6. `.ai/decisions.md`
-7. `.ai/open-questions.md`
+4. `.ai/effect-parsing.md`
+5. `.ai/schema.md`
+6. `.ai/engineering-rules.md`
+7. `.ai/decisions.md`
+8. `.ai/open-questions.md`
 
 ## Project Mission
 

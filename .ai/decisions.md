@@ -102,10 +102,12 @@ Public search uses active extracted effects with `selector_status = resolved`.
 
 Unresolved effects may be stored for audit/debugging when a supported effect is detected but an exact selector cannot be defined.
 
+Ignored effects may be stored when the parser knows the rule but the effect should not be exposed publicly, such as generic selectors that reduce to any card, any Monster, any Spell, or any Trap.
+
 Rationale:
 
 - Incorrect records can be disabled with `is_active = false`.
-- Unresolved records do not appear in public search results.
+- Ignored and unresolved records do not appear in public search results.
 
 ## ADR-007: Store Image URLs Only
 

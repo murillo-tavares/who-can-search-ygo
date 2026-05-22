@@ -55,7 +55,8 @@ Stores normalized Yu-Gi-Oh! card data imported from an external source.
 | `rank` | integer null | Xyz Rank. |
 | `link_rating` | integer null | Link Rating. |
 | `archetype` | text null | Archetype/family name when available. |
-| `mentions` | text[] not null default `{}` | Official card names specifically listed in this card's text. |
+| `mentions` | text[] not null default `{}` | Official card names or explicit family/archetype labels specifically listed in this card's text. |
+| `text_features` | text[] not null default `{}` | Normalized feature flags derived from official card text, such as `coin_toss_effect`, `places_counter_effect`, `dice_roll_effect`, or `cannot_be_normal_summoned_set`. |
 | `image_url` | text null | Upstream image URL used by the frontend. |
 | `ai_processing` | jsonb not null default `{}` | Latest completed AI processing metadata by effect code. |
 | `raw_payload` | jsonb not null | Latest raw upstream payload. |
@@ -67,7 +68,9 @@ Indexes and constraints:
 - unique `upstream_source, upstream_id`;
 - trigram index on `normalized_name`;
 - GIN index on `normalized_aliases`;
+- GIN index on `monster_categories`;
 - GIN index on `mentions`;
+- GIN index on `text_features`;
 - indexes on commonly matched selector fields such as `card_type`, `race`, `attribute`, `level`, `rank`, `link_rating`, `atk`, `def`, and `archetype`.
 
 ## Card Alias Objects
@@ -196,7 +199,7 @@ Stores supported effects extracted from source cards.
 | `cost_text` | text null | Exact cost text such as `Discard 1 card`, without trailing punctuation. |
 | `action_text` | text not null | Isolated supported action text, such as `Add ... from your Deck to your hand`. |
 | `restriction_text` | text null | Exact restriction or limitation text tied to the extracted effect. |
-| `selector_status` | text not null | Whether AI resolved an exact supported selector. |
+| `selector_status` | text not null | Whether the extracted effect is public-matchable, intentionally ignored, or unresolved. |
 | `selector_json` | jsonb null | Canonical selector criteria when resolved. |
 | `selector_hash` | text not null | Stable hash of canonical selector. |
 | `ai_confidence` | numeric null | AI confidence score when provided. |
@@ -207,7 +210,14 @@ Stores supported effects extracted from source cards.
 Supported `selector_status` values:
 
 - `resolved`;
+- `ignored`;
 - `unresolved`.
+
+Meanings:
+
+- `resolved`: selector is deterministic and should be used by public matching.
+- `ignored`: parser recognized the effect and the handling rule is known, but it should not be shown in public matching, such as selectors that would match any card, any Monster, any Spell, or any Trap.
+- `unresolved`: parser recognized a supported action but does not yet know how to represent it safely; these records need later review.
 
 Indexes and constraints:
 
@@ -289,6 +299,14 @@ Selector expression contract:
 - supported comparison operators: `=`, `!=`, `in`, `not_in`, `contains`, `not_contains`, `<`, `<=`, `>`, `>=`;
 - unknown fields, unknown operators, invalid value types, or malformed expression nodes must fail closed.
 
+Supported selector fields include `monster_categories`. Use `contains` or `not_contains` for category filters such as `Ritual`, `Pendulum`, `Tuner`, `Union`, `Spirit`, `Toon`, `Normal`, and similar normalized monster category values.
+
+Supported selector fields include `mentions`. Use `contains` or `not_contains` for exact card-name mentions and explicit family/archetype mention requirements, such as `Dark Magician`, `Destiny HERO`, or `Fallen of Albaz`.
+
+Supported selector fields include `text_features`. Use `contains` or `not_contains` for normalized card text feature flags such as `coin_toss_effect`, `places_counter_effect`, `dice_roll_effect`, or `cannot_be_normal_summoned_set`.
+
+Supported derived selector fields include `combined_atk_def`. It is computed from `atk + def` by matcher/parser code, not stored as a `cards` column unless performance later requires it. Use numeric comparison operators for requirements such as `combined ATK & DEF equal 2000`.
+
 When AI detects a supported effect but cannot define an exact supported selector, store the effect with:
 
 ```json
@@ -300,6 +318,18 @@ When AI detects a supported effect but cannot define an exact supported selector
 ```
 
 Unresolved effects are audit/debug records only and must not appear in public search results.
+
+When the parser can define the handling rule but the effect should not be exposed, store:
+
+```json
+{
+  "selector_status": "ignored",
+  "selector_json": null,
+  "selector_hash": "ignored"
+}
+```
+
+Ignored effects are decided cases, not parser failures.
 
 ## Public Query Shape
 

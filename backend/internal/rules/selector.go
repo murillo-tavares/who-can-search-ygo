@@ -143,7 +143,7 @@ func decodeValue(data json.RawMessage) (any, error) {
 
 func supportedField(field string) bool {
 	switch field {
-	case "name", "card_type", "race", "attribute", "level", "rank", "link_rating", "atk", "def", "archetype", "mentions", "spell_trap_type":
+	case "name", "card_type", "race", "attribute", "level", "rank", "link_rating", "atk", "def", "combined_atk_def", "monster_categories", "archetype", "mentions", "text_features", "spell_trap_type":
 		return true
 	default:
 		return false
@@ -185,6 +185,13 @@ func cardFieldValue(card domain.Card, field string, zone string) (any, bool) {
 		return pointerInt(card.ATK)
 	case "def":
 		return pointerInt(card.DEF)
+	case "combined_atk_def":
+		if card.ATK == nil || card.DEF == nil {
+			return nil, false
+		}
+		return *card.ATK + *card.DEF, true
+	case "monster_categories":
+		return card.MonsterCategories, true
 	case "archetype":
 		values := make([]string, 0, 1+len(card.Aliases))
 		if card.Archetype != nil {
@@ -198,6 +205,8 @@ func cardFieldValue(card domain.Card, field string, zone string) (any, bool) {
 		return values, true
 	case "mentions":
 		return card.Mentions, true
+	case "text_features":
+		return card.TextFeatures, true
 	case "spell_trap_type":
 		return pointerString(card.SpellTrapType)
 	default:

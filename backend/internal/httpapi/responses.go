@@ -26,6 +26,7 @@ type cardResponse struct {
 	LinkRating        *int           `json:"link_rating"`
 	Archetype         *string        `json:"archetype"`
 	Mentions          []string       `json:"mentions"`
+	TextFeatures      []string       `json:"text_features"`
 	ImageURL          *string        `json:"image_url,omitempty"`
 }
 
@@ -54,6 +55,7 @@ func newCardResponse(card domain.Card) cardResponse {
 		LinkRating:        card.LinkRating,
 		Archetype:         card.Archetype,
 		Mentions:          card.Mentions,
+		TextFeatures:      card.TextFeatures,
 		ImageURL:          card.ImageURL,
 	}
 }

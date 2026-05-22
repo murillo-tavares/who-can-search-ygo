@@ -254,7 +254,7 @@ const openAPISpec = `{
       },
       "Card": {
         "type": "object",
-        "required": ["id", "name", "normalized_name", "aliases", "normalized_aliases", "card_type", "race", "attribute", "monster_categories", "spell_trap_type", "atk", "def", "level", "rank", "link_rating", "archetype", "mentions"],
+        "required": ["id", "name", "normalized_name", "aliases", "normalized_aliases", "card_type", "race", "attribute", "monster_categories", "spell_trap_type", "atk", "def", "level", "rank", "link_rating", "archetype", "mentions", "text_features"],
         "properties": {
           "id": {
             "type": "string",
@@ -333,6 +333,12 @@ const openAPISpec = `{
             "type": ["string", "null"]
           },
           "mentions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "text_features": {
             "type": "array",
             "items": {
               "type": "string"

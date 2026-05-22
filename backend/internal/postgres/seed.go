@@ -88,6 +88,7 @@ INSERT INTO cards (
 	link_rating,
 	archetype,
 	mentions,
+	text_features,
 	image_url,
 	ai_processing,
 	raw_payload,
@@ -95,9 +96,9 @@ INSERT INTO cards (
 	updated_at
 ) VALUES (
 	$1, $2, $3, $4, $5, $6, $7, $8::jsonb, $9, $10, $11, $12, $13, $14,
-	$15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25::jsonb, $26::jsonb,
-	COALESCE(NULLIF($27, '')::timestamptz, now()),
-	COALESCE(NULLIF($28, '')::timestamptz, now())
+	$15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26::jsonb, $27::jsonb,
+	COALESCE(NULLIF($28, '')::timestamptz, now()),
+	COALESCE(NULLIF($29, '')::timestamptz, now())
 )
 ON CONFLICT (id) DO UPDATE SET
 	upstream_source = EXCLUDED.upstream_source,
@@ -122,6 +123,7 @@ ON CONFLICT (id) DO UPDATE SET
 	link_rating = EXCLUDED.link_rating,
 	archetype = EXCLUDED.archetype,
 	mentions = EXCLUDED.mentions,
+	text_features = EXCLUDED.text_features,
 	image_url = EXCLUDED.image_url,
 	ai_processing = EXCLUDED.ai_processing,
 	raw_payload = EXCLUDED.raw_payload,
@@ -154,6 +156,7 @@ ON CONFLICT (id) DO UPDATE SET
 		card.LinkRating,
 		card.Archetype,
 		card.Mentions,
+		card.TextFeatures,
 		card.ImageURL,
 		jsonOrDefault(card.AIProcessing, "{}"),
 		jsonOrDefault(card.RawPayload, "{}"),
@@ -260,8 +263,8 @@ func readFixture(path string, value any) error {
 }
 
 func selectorHash(effect domain.CardEffect) (string, error) {
-	if effect.SelectorStatus == "unresolved" {
-		return "unresolved", nil
+	if effect.SelectorStatus != domain.SelectorStatusResolved {
+		return effect.SelectorStatus, nil
 	}
 
 	var selector any

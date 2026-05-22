@@ -23,6 +23,7 @@ SELECT
     link_rating,
     archetype,
     mentions,
+    text_features,
     image_url,
     ai_processing,
     raw_payload,

@@ -4,6 +4,12 @@ import "encoding/json"
 
 const EffectCodeAddDeckToHand = "add_deck_to_hand"
 
+const (
+	SelectorStatusResolved   = "resolved"
+	SelectorStatusIgnored    = "ignored"
+	SelectorStatusUnresolved = "unresolved"
+)
+
 type Card struct {
 	ID                string          `json:"id"`
 	UpstreamSource    string          `json:"upstream_source,omitempty"`
@@ -28,6 +34,7 @@ type Card struct {
 	LinkRating        *int            `json:"link_rating"`
 	Archetype         *string         `json:"archetype"`
 	Mentions          []string        `json:"mentions"`
+	TextFeatures      []string        `json:"text_features"`
 	ImageURL          *string         `json:"image_url,omitempty"`
 	AIProcessing      json.RawMessage `json:"ai_processing,omitempty"`
 	RawPayload        json.RawMessage `json:"raw_payload,omitempty"`

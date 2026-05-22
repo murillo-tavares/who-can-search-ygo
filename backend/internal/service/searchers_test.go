@@ -70,7 +70,7 @@ func (r *fixtureRepo) SearchCards(_ context.Context, query string, limit int) ([
 func (r *fixtureRepo) ListActiveResolvedEffects(_ context.Context, effectCode string) ([]domain.CardEffect, error) {
 	var results []domain.CardEffect
 	for _, effect := range r.effects {
-		if effect.EffectCode == effectCode && effect.SelectorStatus == "resolved" && effect.IsActive {
+		if effect.EffectCode == effectCode && effect.SelectorStatus == domain.SelectorStatusResolved && effect.IsActive {
 			results = append(results, effect)
 		}
 	}

@@ -26,6 +26,7 @@ CREATE TABLE cards (
     link_rating integer NULL,
     archetype text NULL,
     mentions text[] NOT NULL DEFAULT '{}',
+    text_features text[] NOT NULL DEFAULT '{}',
     image_url text NULL,
     ai_processing jsonb NOT NULL DEFAULT '{}'::jsonb,
     raw_payload jsonb NOT NULL,
@@ -36,7 +37,9 @@ CREATE TABLE cards (
 
 CREATE INDEX cards_normalized_name_trgm_idx ON cards USING gin (normalized_name gin_trgm_ops);
 CREATE INDEX cards_normalized_aliases_gin_idx ON cards USING gin (normalized_aliases);
+CREATE INDEX cards_monster_categories_gin_idx ON cards USING gin (monster_categories);
 CREATE INDEX cards_mentions_gin_idx ON cards USING gin (mentions);
+CREATE INDEX cards_text_features_gin_idx ON cards USING gin (text_features);
 CREATE INDEX cards_card_type_idx ON cards (card_type);
 CREATE INDEX cards_race_idx ON cards (race);
 CREATE INDEX cards_attribute_idx ON cards (attribute);
@@ -64,10 +67,10 @@ CREATE TABLE card_effects (
     is_active boolean NOT NULL DEFAULT true,
     created_at timestamptz NOT NULL DEFAULT now(),
     updated_at timestamptz NOT NULL DEFAULT now(),
-    CONSTRAINT card_effects_selector_status_check CHECK (selector_status IN ('resolved', 'unresolved')),
-    CONSTRAINT card_effects_resolved_selector_check CHECK (
+    CONSTRAINT card_effects_selector_status_check CHECK (selector_status IN ('resolved', 'ignored', 'unresolved')),
+    CONSTRAINT card_effects_selector_json_check CHECK (
         (selector_status = 'resolved' AND selector_json IS NOT NULL)
-        OR (selector_status = 'unresolved' AND selector_json IS NULL)
+        OR (selector_status IN ('ignored', 'unresolved') AND selector_json IS NULL)
     )
 );
 
