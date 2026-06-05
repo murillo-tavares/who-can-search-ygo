@@ -1,0 +1,25 @@
+--- desejáveis ---
+- utilizar cache para imagens pelo menos (nao usar url do ygoproapi)
+- calcular peso de ordenacao (custo, restricao, generico)
+- reportar carta como erro
+    - sistema mapeia numeros de vezes que carta foi retornada / foi reportada
+
+--- avancado ---
+- animacao de summon do master duel
+
+--- organizacao ---
+- revisar docs em .ai para remover redundancias e coisas repetidas ou irrelevantes
+- doc openapi: mover Get Card para Baixo de Get Searchers
+
+
+
+
+--- correcoes ---
+dark sage -> erroneamente considerado como coin toss
+Familiar-Possessed - Lyna -> sem filtro de DEF
+Garum the Storm Vassal -> sem filtro de ATK e DEF
+Gizmek Makami, the Ferocious Fanged Fortress -> sem filtro de ATK e DEF
+Glitch Clutch Nullgainer -> sem filtro de ATK
+Wightbaking -> errado
+Chaos Distill -> erro em 'ATK ?'
+Cupid Pitch -> em em filtro de DEF = 600
